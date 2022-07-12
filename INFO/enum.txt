@@ -1,0 +1,20 @@
+
+- normal stone		2
+- breakable stone	3
+- movable stone		4
+- spike			5
+- toggled spike		0 1
+- goal point		6 
+- potion		7
+
+S start
+G goal
+P potion
+. = ground
+N = normal stone
+B = breakable stone
+M = movable stone
+
+| spike
+T toggled spike0
+T toggled spike1

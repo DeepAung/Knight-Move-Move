@@ -1,0 +1,16 @@
+special abilities
+1.charge
+2.strong
+3.invincible
+
+score criteria
+1.nums of move left
+2.nums of barrel destroy
+
+10 * 18
+S = player
+E = goal point
+B = barrel
+G = ground
+P = potion
+X = wall

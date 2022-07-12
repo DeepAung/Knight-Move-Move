@@ -1,0 +1,8 @@
+7 8 1 10 5
+ X X .B. . X X X
+ X .B. .B. X X X
+ .B.N.B.N. . X X
+B.1.S_2.B. . X X
+ .B.N. .N. . X X
+ .B.B. _ . . . E
+ N . . . . . X X
