@@ -7,6 +7,7 @@ using System.IO;
 
 public class MapGenerator : MonoBehaviour
 {
+
     [System.Serializable]
     public struct pair
     {
@@ -14,61 +15,201 @@ public class MapGenerator : MonoBehaviour
         public Tile tile;
     }
 
-    public Player myPlayer;
     public pair[] tiles;
     public Tilemap groundTilemap, topTilemap;
+    public GameObject[] prefabs;
+    public GameManager gameManager;
+    public UIManager UI;
 
     string path;
-    string[] mapText;
-    int n, m, cnt;
-    int[] potion;
+    string[] mapText, firstLine;
+    int n, m;
+    Vector2Int offset;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+
+        UI.mapNumber.text = PassValue.instance.mapIndex.ToString();
 
         loadMapFromText();
 
-        assignValueToPlayer();
+        renderMap();
 
-        myPlayer.moveCount = cnt;
-        
+        assignValue();
 
     }
 
     void loadMapFromText()
     {
-        path = Application.dataPath + "/Map/" + "1" + ".txt";
+        path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapIndex.ToString() + ".txt";
         mapText = File.ReadAllLines(path);
+
+        // assign a top line
+        firstLine = mapText[0].Split();
+        gameManager.n = n = int.Parse(firstLine[0]);
+        gameManager.m = m = int.Parse(firstLine[1]);
+
+        offset.x = -m / 2;
+        offset.y = n / 2 - 1;
+        
     }
 
-    void assignValueToPlayer()
+    void assignValue()
     {
-        // assign a top line
-        string[] firstLine = mapText[0].Split();
-        n = int.Parse(firstLine[0]);
-        m = int.Parse(firstLine[1]);
-        myPlayer.moveCount = int.Parse(firstLine[2]);
-        potion = new int[firstLine.Length - 3];
-        for (int i = 0; i < firstLine.Length - 3; i++)
-        {
-            potion[i] = int.Parse(firstLine[i + 3]);
-        }
 
-        // assign the following lines
-        for (int i = 1; i < mapText.Length; i++)
+        //gameManager.myPotions = new Potion[firstLine.Length - 3];
+        //for (int i = 0; i < firstLine.Length - 3; i++)
+        //{
+        //    potion[i] = int.Parse(firstLine[i + 3]);
+        //}
+
+
+
+    }
+
+    void renderMap()
+    {
+
+        for (int x = -9; x <= 8; x++)
         {
-            for (int j = 0; j < mapText[i].Length; j += 2)
+            for (int y = 4; y >= -5; y--)
             {
-                char topLayer = mapText[i][j],
-                     groundLayer = mapText[i][j+1];
-
-                if (topLayer == 'P') myPlayer.pos = new Vector2Int(i, j);
-
-                // TODO:
+                groundTilemap.SetTile(new Vector3Int(x, y, 0), tiles[0].tile);
             }
         }
 
+        // set myMap length
+        gameManager.myMap = new GameManager.layer[mapText.Length - 1, mapText[1].Length];
+        gameManager.myPotions = new Potion[firstLine.Length - 3];
+
+        for (int i = 0; i+1 < mapText.Length; i++)
+        {
+            for (int j = 0; j*2 < mapText[i+1].Length; j++)
+            {
+                char topLayer = mapText[i+1][j*2],
+                     groundLayer = mapText[i+1][j*2 + 1];
+
+                // gradually update myMap
+                gameManager.myMap[i, j].topLayer = topLayer;
+                gameManager.myMap[i, j].groundLayer = groundLayer;
+
+
+                // render ground layer
+                if (groundLayer == 'X')
+                {
+                    generateTile(i, j, tiles[0].tile);
+                }
+                else if (groundLayer == '.')
+                {
+                    generateTile(i, j, tiles[1].tile);
+                }
+                else if (groundLayer == 'E') // goal  
+                {
+                    generateTile(i, j, tiles[1].tile);
+                    generatePrefabs(i, j, -0.5f, 0.5f, prefabs[5]);
+                }
+                else if (groundLayer == '_') // pressure plate
+                {
+                    generateTile(i, j, tiles[1].tile);
+                    var pressurePlateObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[6])
+                        .GetComponent<PressurePlate>();
+
+                    pressurePlateObj.position[0] = i;
+                    pressurePlateObj.position[1] = j;
+                    gameManager.myPressurePlates.Add(pressurePlateObj);
+                }
+                else if (groundLayer == '|') // normal spike
+                {
+                    var normalSpikeObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[7])
+                        .GetComponent<NormalSpike>();
+
+                    normalSpikeObj.position[0] = i;
+                    normalSpikeObj.position[1] = j;
+                    gameManager.myNormalSpikes.Add(normalSpikeObj);
+                }
+                else if (groundLayer == '+') // swappable spike +
+                {
+                    var swappableSpikeObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[8])
+                        .GetComponent<SwappableSpike>();
+
+                    swappableSpikeObj.position[0] = i;
+                    swappableSpikeObj.position[1] = j;
+                    swappableSpikeObj.startWith = true;
+                    gameManager.mySwappableSpikes.Add(swappableSpikeObj);
+                }
+                else if (groundLayer == '-') // swappable spike -
+                {
+                    var swappableSpikeObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[8])
+                        .GetComponent<SwappableSpike>();
+
+                    swappableSpikeObj.position[0] = i;
+                    swappableSpikeObj.position[1] = j;
+                    swappableSpikeObj.startWith = false;
+                    gameManager.mySwappableSpikes.Add(swappableSpikeObj);
+                }
+                else
+                {
+                    generateTile(i, j, tiles[2].tile);
+                }
+                // end render
+
+
+                // render top layer
+                if (topLayer == 'S') // player
+                {
+                    var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
+                        .GetComponent<Player>();
+
+                    playerObj.position = new int[2] {i, j};
+                    playerObj.moveCount = int.Parse(firstLine[2]);
+                    gameManager.myPlayer = playerObj;
+                    UI.myPlayer = playerObj;
+
+                }
+                else if ('0' <= topLayer && topLayer <= '9') // potions
+                {
+                    var potionObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[1])
+                        .GetComponent<Potion>();
+
+                    potionObj.power = int.Parse(firstLine[topLayer - '1' + 3]);
+                    gameManager.myPotions[topLayer - '1'] = potionObj;
+                }
+                else if (topLayer == 'N') // normal stone
+                {
+                    generatePrefabs(i, j, -0.5f, 0.05f, prefabs[2]);
+                }
+                else if (topLayer == 'B') // breakable stone
+                {
+                    var breakableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[3])
+                        .GetComponent<BreakableStone>();
+
+                    breakableStoneObj.position[0] = i;
+                    breakableStoneObj.position[1] = j;
+                    gameManager.myBreakableStones.Add(breakableStoneObj);
+                }
+                else if (topLayer == 'M') // movable stone
+                {
+                    var movableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[4])
+                        .GetComponent<MovableStone>();
+
+                    movableStoneObj.position[0] = i;
+                    movableStoneObj.position[1] = j;
+                    gameManager.myMovableStones.Add(movableStoneObj);
+                }
+                // end render
+
+            }
+        }
+    }
+    public void generateTile(int i, int j, Tile tile)
+    {
+        groundTilemap.SetTile(new Vector3Int(offset.x + j, offset.y - i, 0), tile);
+    }
+
+    public GameObject generatePrefabs(int i, int j, float h, float k, GameObject obj)
+    {
+        return Instantiate(obj, new Vector3(offset.x+1 + j + h, offset.y - i + k, 0), Quaternion.identity);
     }
 
 }
