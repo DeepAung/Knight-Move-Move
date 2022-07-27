@@ -5,12 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-    public GameObject MainMenu, MapSelectMenu;
+    public GameObject MainMenu, MapSelectMenu, AboutMenu;
 
     private void Start()
     {
         MainMenu.SetActive(true);
         MapSelectMenu.SetActive(false);
+        AboutMenu.SetActive(false);
     }
 
     public void playGame()
