@@ -42,6 +42,12 @@ public class GameManager : MonoBehaviour
 
             if (!canMove(movement.x, 0f))
             {
+                if (myPlayer.moveCount <= 0)
+                {
+                    myPlayer.animationDestroy();
+                    return;
+                }
+
                 StartCoroutine(waitForMoving());
                 return;
             }
@@ -56,6 +62,12 @@ public class GameManager : MonoBehaviour
 
             if (!canMove(0f, movement.y))
             {
+                if (myPlayer.moveCount <= 0)
+                {
+                    myPlayer.animationDestroy();
+                    return;
+                }
+
                 StartCoroutine(waitForMoving());
                 return;
             }
@@ -177,12 +189,13 @@ public class GameManager : MonoBehaviour
         {
             if (PassValue.instance.mapIndex == 5)
             {
-                Debug.Log("--------------- Game Ended ---------------");
+                PassValue.instance.dialogueName = "Outro";
+                SceneLoader.instance.loadScene(2);
             }
             else
             {
                 PassValue.instance.mapIndex++;
-                UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+                SceneLoader.instance.loadScene(1);
             }
 
             myPlayer.pass = true;
