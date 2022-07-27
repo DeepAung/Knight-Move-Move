@@ -5,4 +5,4 @@
  . .S. .B.B.N. - . . X
  X X . . . . .B. . X X
  X X X .N. .N. .2. X X
- X X X1. . .N.N. X X X
+ X X X3. . .N.N. X X X

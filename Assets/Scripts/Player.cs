@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // TODO: use stack to collect list of move that is on process
     //[HideInInspector]
     public int moveCount;
     [HideInInspector]
@@ -126,11 +125,10 @@ public class Player : MonoBehaviour
 
     public IEnumerator restartScene()
     {
-        Debug.Log("restarting scene");
 
         yield return new WaitForSecondsRealtime(1.5f);
-        Debug.Log("restarting scene2");
-        UnityEngine.SceneManagement.SceneManager.LoadScene(1);
+
+        SceneLoader.instance.loadScene(1);
     }
 
 }

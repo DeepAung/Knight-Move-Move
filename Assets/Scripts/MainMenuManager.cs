@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour
 {
-
     public GameObject MainMenu, MapSelectMenu;
 
     private void Start()
@@ -25,7 +24,7 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
     }
 
-    public void goToGamePlay()
+    public void goToScene(int index)
     {
         int mapIndex = int.Parse(
             UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name
@@ -33,7 +32,12 @@ public class MainMenuManager : MonoBehaviour
 
         PassValue.instance.mapIndex = mapIndex;
 
-        SceneManager.LoadScene(1);
+        if (index == 2)
+        {
+            PassValue.instance.dialogueName = "Intro";
+        }
+
+        SceneLoader.instance.loadScene(index);
     }
 
 }

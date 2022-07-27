@@ -36,8 +36,6 @@ public class MapGenerator : MonoBehaviour
 
         renderMap();
 
-        assignValue();
-
     }
 
     void loadMapFromText()
@@ -53,19 +51,6 @@ public class MapGenerator : MonoBehaviour
         offset.x = -m / 2;
         offset.y = n / 2 - 1;
         
-    }
-
-    void assignValue()
-    {
-
-        //gameManager.myPotions = new Potion[firstLine.Length - 3];
-        //for (int i = 0; i < firstLine.Length - 3; i++)
-        //{
-        //    potion[i] = int.Parse(firstLine[i + 3]);
-        //}
-
-
-
     }
 
     void renderMap()

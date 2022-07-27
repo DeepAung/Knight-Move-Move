@@ -98,8 +98,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e93322a2eacf7ef4f87825ddc25af6a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneLoader: {fileID: 0}
   moveCount: 0
   position: 
+  pass: 0
   moveSpeed: 10
   animator: {fileID: 6270312172909827636}
 --- !u!95 &6270312172909827636

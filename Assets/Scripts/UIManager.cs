@@ -35,10 +35,11 @@ public class UIManager : MonoBehaviour
         {
             togglePauseMenu();
         }
-        if (Input.GetKeyDown(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.R))
         {
+            Time.timeScale = 1;
             // restart scene
-            SceneManager.LoadScene(1);
+            SceneLoader.instance.loadScene(1);
         }
     }
 
@@ -55,7 +56,8 @@ public class UIManager : MonoBehaviour
 
     public void goToMainMenu()
     {
-        SceneManager.LoadScene(0);
+        Time.timeScale = 1;
+        SceneLoader.instance.loadScene(0);
     }
 
 
