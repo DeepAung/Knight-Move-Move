@@ -1466,6 +1466,8 @@ MonoBehaviour:
     tile: {fileID: 11400000, guid: 4115c11c05f856d4987b5e05db46fec0, type: 2}
   - name: Spike Inactive
     tile: {fileID: 11400000, guid: ae82a6457a0595342aa6742d20ef278f, type: 2}
+  - name: Tile Error
+    tile: {fileID: 11400000, guid: eedff127053080c408dee5368a8661f1, type: 2}
   groundTilemap: {fileID: 1548878092}
   topTilemap: {fileID: 1877994352}
   prefabs:
