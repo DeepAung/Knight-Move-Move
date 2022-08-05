@@ -31,6 +31,7 @@ public class MapGenerator : MonoBehaviour
     {
 
         UI.mapNumber.text = PassValue.instance.mapIndex.ToString();
+        
 
         loadMapFromText();
 
@@ -55,7 +56,7 @@ public class MapGenerator : MonoBehaviour
 
     void renderMap()
     {
-
+        // render all cells to background
         for (int x = -9; x <= 8; x++)
         {
             for (int y = 4; y >= -5; y--)
@@ -68,6 +69,7 @@ public class MapGenerator : MonoBehaviour
         gameManager.myMap = new GameManager.layer[mapText.Length - 1, mapText[1].Length];
         gameManager.myPotions = new Potion[firstLine.Length - 3];
 
+        // start render map
         for (int i = 0; i+1 < mapText.Length; i++)
         {
             for (int j = 0; j*2 < mapText[i+1].Length; j++)
@@ -78,6 +80,42 @@ public class MapGenerator : MonoBehaviour
                 // gradually update myMap
                 gameManager.myMap[i, j].topLayer = topLayer;
                 gameManager.myMap[i, j].groundLayer = groundLayer;
+
+                // render top layer
+                if (topLayer == 'S') // player
+                {
+                    var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
+                        .GetComponent<Player>();
+
+                    playerObj.position = new int[2] {i, j};
+                    playerObj.moveCount = int.Parse(firstLine[2]);
+                    gameManager.myPlayer = playerObj;
+                    UI.myPlayer = playerObj;
+
+                }
+                else if (topLayer == 'N') // normal stone
+                {
+                    generatePrefabs(i, j, -0.5f, 0.05f, prefabs[2]);
+                }
+                else if (topLayer == 'B') // breakable stone
+                {
+                    var breakableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[3])
+                        .GetComponent<BreakableStone>();
+
+                    breakableStoneObj.position[0] = i;
+                    breakableStoneObj.position[1] = j;
+                    gameManager.myBreakableStones.Add(breakableStoneObj);
+                }
+                else if (topLayer == 'M') // movable stone
+                {
+                    var movableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[4])
+                        .GetComponent<MovableStone>();
+
+                    movableStoneObj.position[0] = i;
+                    movableStoneObj.position[1] = j;
+                    gameManager.myMovableStones.Add(movableStoneObj);
+                }
+                // end render
 
 
                 // render ground layer
@@ -94,9 +132,18 @@ public class MapGenerator : MonoBehaviour
                     generateTile(i, j, tiles[1].tile);
                     generatePrefabs(i, j, -0.5f, 0.5f, prefabs[5]);
                 }
+                else if ('1' <= groundLayer && groundLayer <= '9') // potions
+                {
+                    generateTile(i, j, tiles[1].tile); // gen ground layer
+                    var potionObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[1])
+                        .GetComponent<Potion>();
+
+                    potionObj.power = int.Parse(firstLine[groundLayer - '1' + 3]);
+                    gameManager.myPotions[groundLayer - '1'] = potionObj;
+                }
                 else if (groundLayer == '_') // pressure plate
                 {
-                    generateTile(i, j, tiles[1].tile);
+                    generateTile(i, j, tiles[1].tile); // gen ground layer
                     var pressurePlateObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[6])
                         .GetComponent<PressurePlate>();
 
@@ -135,54 +182,10 @@ public class MapGenerator : MonoBehaviour
                 }
                 else
                 {
-                    generateTile(i, j, tiles[2].tile);
+                    generateTile(i, j, tiles[5].tile);
                 }
                 // end render
 
-
-                // render top layer
-                if (topLayer == 'S') // player
-                {
-                    var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
-                        .GetComponent<Player>();
-
-                    playerObj.position = new int[2] {i, j};
-                    playerObj.moveCount = int.Parse(firstLine[2]);
-                    gameManager.myPlayer = playerObj;
-                    UI.myPlayer = playerObj;
-
-                }
-                else if ('0' <= topLayer && topLayer <= '9') // potions
-                {
-                    var potionObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[1])
-                        .GetComponent<Potion>();
-
-                    potionObj.power = int.Parse(firstLine[topLayer - '1' + 3]);
-                    gameManager.myPotions[topLayer - '1'] = potionObj;
-                }
-                else if (topLayer == 'N') // normal stone
-                {
-                    generatePrefabs(i, j, -0.5f, 0.05f, prefabs[2]);
-                }
-                else if (topLayer == 'B') // breakable stone
-                {
-                    var breakableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[3])
-                        .GetComponent<BreakableStone>();
-
-                    breakableStoneObj.position[0] = i;
-                    breakableStoneObj.position[1] = j;
-                    gameManager.myBreakableStones.Add(breakableStoneObj);
-                }
-                else if (topLayer == 'M') // movable stone
-                {
-                    var movableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[4])
-                        .GetComponent<MovableStone>();
-
-                    movableStoneObj.position[0] = i;
-                    movableStoneObj.position[1] = j;
-                    gameManager.myMovableStones.Add(movableStoneObj);
-                }
-                // end render
 
             }
         }

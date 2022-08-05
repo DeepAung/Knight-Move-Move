@@ -101,13 +101,13 @@ public class GameManager : MonoBehaviour
         Debug.Log("curr: " + topLayer + " " + groundLayer  + " | next: " + newTopLayer + " " + newGroundLayer);
 
 
-        if ('1' <= newTopLayer && newTopLayer <= '9' && myPotions[newTopLayer - '1'])
+        if ('1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
         {
-            myMap[ni, nj].topLayer = ' ';
-            myPlayer.moveCount += myPotions[newTopLayer - '1'].power;
-            myPotions[newTopLayer - '1'].Destroy();
+            myMap[ni, nj].groundLayer = '.';
+            myPlayer.moveCount += myPotions[newGroundLayer - '1'].power;
+            myPotions[newGroundLayer - '1'].Destroy();
         }
-        else if (newTopLayer == 'B')
+        if (newTopLayer == 'B')
         {
             for (int it = 0; it < myBreakableStones.Count; it++)
             {
