@@ -964,7 +964,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 730597089}
-  - component: {fileID: 730597090}
   m_Layer: 5
   m_Name: MapSelectMenu
   m_TagString: Untagged
@@ -995,21 +994,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &730597090
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 730597088}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 28c198a0eb80ca441913c5c0f463cdfc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ButtonPrefab: {fileID: 0}
-  arrowLeft: {fileID: 0}
-  arrowRight: {fileID: 0}
 --- !u!1 &739342261
 GameObject:
   m_ObjectHideFlags: 0
@@ -2875,7 +2859,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 8.840027}
+  m_AnchoredPosition: {x: 0, y: 8.840088}
   m_SizeDelta: {x: -600, y: -617.67}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1710327616

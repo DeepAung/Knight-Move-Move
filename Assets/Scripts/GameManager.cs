@@ -187,7 +187,7 @@ public class GameManager : MonoBehaviour
 
         if (playerCanMove && newGroundLayer == 'E')
         {
-            if (PassValue.instance.mapIndex == 5)
+            if (PassValue.instance.mapIndex == PassValue.instance.mapList[PassValue.instance.mapList.Count - 1])
             {
                 PassValue.instance.dialogueName = "Outro";
                 SceneLoader.instance.loadScene(2);
