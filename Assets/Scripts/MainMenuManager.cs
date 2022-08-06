@@ -14,18 +14,18 @@ public class MainMenuManager : MonoBehaviour
         AboutMenu.SetActive(false);
     }
 
-    public void playGame()
+    public static void playGame()
     {
         SceneManager.LoadScene(1);
     }
 
-    public void exitGame()
+    public static void exitGame()
     {
         Debug.Log("--------------- QUIT -------------------");
         Application.Quit();
     }
 
-    public void goToScene(int index)
+    public static void goToScene()
     {
         int mapIndex = int.Parse(
             UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name
@@ -33,12 +33,15 @@ public class MainMenuManager : MonoBehaviour
 
         PassValue.instance.mapIndex = mapIndex;
 
-        if (index == 2)
+        if (mapIndex == 0)
         {
             PassValue.instance.dialogueName = "Intro";
+            SceneLoader.instance.loadScene(2);
         }
-
-        SceneLoader.instance.loadScene(index);
+        else
+        {
+            SceneLoader.instance.loadScene(1);
+        }
     }
 
 }
