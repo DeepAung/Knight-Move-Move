@@ -15,6 +15,9 @@ public class MapGenerator : MonoBehaviour
         public Tile tile;
     }
 
+    // for debugging
+    public GameObject passValuePrefab;
+
     public pair[] tiles;
     public Tilemap groundTilemap, topTilemap;
     public GameObject[] prefabs;
@@ -26,9 +29,18 @@ public class MapGenerator : MonoBehaviour
     int n, m;
     Vector2Int offset;
 
+    // for tutorial
+    int saveI, saveJ;
+
     // Start is called before the first frame update
     void Awake()
     {
+        // for debugging
+        if (!PassValue.instance)
+        {
+            GameObject result = Instantiate(passValuePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
+
+        }
 
         UI.mapNumber.text = PassValue.instance.mapIndex.ToString();
         
@@ -84,6 +96,14 @@ public class MapGenerator : MonoBehaviour
                 // render top layer
                 if (topLayer == 'S') // player
                 {
+
+                    if (PassValue.instance.isTutorial)
+                    {
+                        saveI = i; saveJ = j;
+                        i = PassValue.instance.playerLastPos[0];
+                        j = PassValue.instance.playerLastPos[1];
+                    }
+
                     var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
                         .GetComponent<Player>();
 
@@ -91,6 +111,11 @@ public class MapGenerator : MonoBehaviour
                     playerObj.moveCount = int.Parse(firstLine[2]);
                     gameManager.myPlayer = playerObj;
                     UI.myPlayer = playerObj;
+
+                    if (PassValue.instance.isTutorial)
+                    {
+                        i = saveI; j = saveJ;
+                    }
 
                 }
                 else if (topLayer == 'N') // normal stone

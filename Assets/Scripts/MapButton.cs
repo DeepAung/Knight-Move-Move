@@ -6,8 +6,11 @@ public class MapButton : MonoBehaviour
 {
     public void goToScene()
     {
-
-
         MainMenuManager.goToScene();
+    }
+
+    public void Destroy()
+    {
+        Destroy(gameObject);
     }
 }

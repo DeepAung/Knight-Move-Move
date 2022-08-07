@@ -1,0 +1,10 @@
+First, your remaining move count is on the left-button.
+As you can see your move count is not enough to go to the goal. you need to collect a potion to increase your move count.
+So sad, but you cannot go that path any more, let go down.
+In front of you is a breakable object. when you move to that cell, the object will be broken(you will lose 1 move count).
+This is a movable object. you can push away to clear your path(lose 1 move count too).
+Let's get another potion!
+Careful! in front of you is a spike. it'll decrease your move count by 1.
+On your top is not a normal spike. it's a swappable. every time you move, it'll swap in and out.
+Try to break the object that is on your left. it might help.
+Congratulations, you've just finished the tutorial. now you are ready for adventure!!!

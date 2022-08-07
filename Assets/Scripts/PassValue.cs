@@ -7,15 +7,23 @@ using System.IO;
 public class PassValue : MonoBehaviour
 {
     public static PassValue instance;
-    public int mapIndex;
+    public int mapIndex = 0;
     public List<int> mapList;
     public string dialogueName;
+
+    // for tutorials
+    public bool isTutorial;
+    public int[] playerLastPos;
+    public int popUpIndex;
 
     private void Awake()
     {
         if (instance == null)
         {
             instance = this;
+            isTutorial = true;
+            popUpIndex = -1;
+            playerLastPos = new int[] { 0, 4 };
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -35,6 +43,7 @@ public class PassValue : MonoBehaviour
                 mapList.Add(result);
             }
         }
+        mapList.Sort();
 
     }
 }

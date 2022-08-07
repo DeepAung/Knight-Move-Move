@@ -72,7 +72,6 @@ public class Player : MonoBehaviour
 
         if (frameCnt <= 0)
         {
-            gameObject.transform.position = targetPos;
             myQueue.Dequeue();
             frameCnt = 5;
         }

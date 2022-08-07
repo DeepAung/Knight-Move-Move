@@ -29,6 +29,14 @@ public class GameManager : MonoBehaviour
     public int n, m;
     bool isMoving = false;
 
+    //void Start()
+    //{
+    //    if (PassValue.instance.isTutorial)
+    //    {
+
+    //    }
+    //}
+
     // Update is called once per frame
     void Update()
     {
@@ -194,7 +202,9 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                PassValue.instance.mapIndex++;
+                PassValue.instance.mapIndex = PassValue.instance.mapList[
+                    PassValue.instance.mapList.IndexOf(PassValue.instance.mapIndex) + 1
+                ];
                 SceneLoader.instance.loadScene(1);
             }
 

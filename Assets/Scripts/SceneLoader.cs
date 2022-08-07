@@ -22,11 +22,9 @@ public class SceneLoader : MonoBehaviour
     public IEnumerator awaitLoadScene(int index)
     {
         animator.SetTrigger("Start");
-        Debug.Log("SetTrigger()");
 
         yield return new WaitForSecondsRealtime(1);
 
         SceneManager.LoadScene(index);
-        Debug.Log("LoadScene()");
     }
 }

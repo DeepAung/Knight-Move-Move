@@ -13,6 +13,7 @@ public class MapParent : MonoBehaviour
     int maxPage, remainder;
     int firstIndex = 0;
     bool isLoad = false;
+    MapButton[] buttons;
 
     // for toRoman function
     static string[] romanLetter = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I", };
@@ -21,10 +22,11 @@ public class MapParent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        buttons = new MapButton[10];
         mapList = PassValue.instance.mapList;
 
-        maxPage = (mapList.Count + 19) / 20; // always round up
-        remainder = mapList.Count % 20; // the left over
+        maxPage = (mapList.Count + 9) / 10; // always round up
+        remainder = mapList.Count % 10; // the left over
     }
 
     // Update is called once per frame
@@ -32,7 +34,6 @@ public class MapParent : MonoBehaviour
     {
         if (!isLoad && gameObject.activeSelf)
         {
-            Debug.Log("rendering map");
             renderMapButton();
             isLoad = true;
         }
@@ -40,6 +41,8 @@ public class MapParent : MonoBehaviour
 
     void renderMapButton()
     {
+        for (int i = 0; i < 10; i++) if (buttons[i]) buttons[i].Destroy();
+
         int cnt = firstIndex;
         for (int i = 1; i >= -1; i -= 2) // i = 1, -1
         {
@@ -53,16 +56,18 @@ public class MapParent : MonoBehaviour
 
                 GameObject button = Instantiate(
                     ButtonPrefab, 
-                    new Vector3((float)j*325, (float)i*125, 0f), 
+                    new Vector3((float)j*300, (float)i*125, 0f), 
                     Quaternion.identity
                 );
                 button.transform.SetParent(gameObject.transform, false);
                 button.name = mapList[cnt].ToString();
 
                 TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
-                buttonText.text = (cnt == 0) ? "0" : toRoman(cnt);
+                buttonText.text = (mapList[cnt] == 0) ? "O" : toRoman(mapList[cnt]);
 
                 // ----------- //
+                buttons[cnt - firstIndex] = button.GetComponent<MapButton>();
+
                 cnt++;
             }
         }
@@ -71,14 +76,14 @@ public class MapParent : MonoBehaviour
     public void goLeftPage()
     {
         if (firstIndex == 0) return;
-        firstIndex -= 20;
+        firstIndex -= 10;
         renderMapButton();
     }
 
     public void goRightPage()
     {
-        if (firstIndex + 20 > mapList.Count) return;
-        firstIndex += 20;
+        if (firstIndex + 10 > mapList.Count) return;
+        firstIndex += 10;
         renderMapButton();
     }
 

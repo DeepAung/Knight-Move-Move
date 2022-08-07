@@ -36,6 +36,7 @@ public class MainMenuManager : MonoBehaviour
         if (mapIndex == 0)
         {
             PassValue.instance.dialogueName = "Intro";
+            PassValue.instance.isTutorial = true;
             SceneLoader.instance.loadScene(2);
         }
         else
