@@ -204,7 +204,6 @@ MonoBehaviour:
   gameManager: {fileID: 934070640}
   popUpText: {fileID: 1635024093}
   popUps: []
-  popUpIndex: 0
 --- !u!4 &247604911
 Transform:
   m_ObjectHideFlags: 0
@@ -4878,7 +4877,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Hello this is a pop up.
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a594e9b7b3c66c4a9fb8369c15c20cc, type: 2}
   m_sharedMaterial: {fileID: -2852492305608174360, guid: 9a594e9b7b3c66c4a9fb8369c15c20cc,

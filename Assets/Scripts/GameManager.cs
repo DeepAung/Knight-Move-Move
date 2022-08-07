@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
              newTopLayer    = myMap[ni, nj].topLayer,
              newGroundLayer = myMap[ni, nj].groundLayer;
 
-        if (myPlayer.moveCount == 0) return false;
+        if (myPlayer.moveCount <= 0) return false;
         if (newGroundLayer == 'X') return false;
         if (newTopLayer == 'N') return false;
 

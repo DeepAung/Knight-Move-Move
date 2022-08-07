@@ -28,6 +28,7 @@ public class TutorialManager : MonoBehaviour
     {
         if (!PassValue.instance.isTutorial)
         {
+            Destroy(popUpText);
             Destroy(gameObject);
             return;
         }

@@ -97,13 +97,6 @@ public class MapGenerator : MonoBehaviour
                 if (topLayer == 'S') // player
                 {
 
-                    if (PassValue.instance.isTutorial)
-                    {
-                        saveI = i; saveJ = j;
-                        i = PassValue.instance.playerLastPos[0];
-                        j = PassValue.instance.playerLastPos[1];
-                    }
-
                     var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
                         .GetComponent<Player>();
 
@@ -111,11 +104,6 @@ public class MapGenerator : MonoBehaviour
                     playerObj.moveCount = int.Parse(firstLine[2]);
                     gameManager.myPlayer = playerObj;
                     UI.myPlayer = playerObj;
-
-                    if (PassValue.instance.isTutorial)
-                    {
-                        i = saveI; j = saveJ;
-                    }
 
                 }
                 else if (topLayer == 'N') // normal stone
