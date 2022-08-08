@@ -53,8 +53,18 @@ public class MapGenerator : MonoBehaviour
 
     void loadMapFromText()
     {
-        path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapIndex.ToString() + ".txt";
-        mapText = File.ReadAllLines(path);
+        if (PassValue.instance.isTutorial)
+        {
+            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapIndex.ToString() + 
+                "-" + PassValue.instance.stageIndex + ".txt";
+            mapText = File.ReadAllLines(path);
+        }
+        else
+        {
+
+            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapIndex.ToString() + ".txt";
+            mapText = File.ReadAllLines(path);
+        }
 
         // assign a top line
         firstLine = mapText[0].Split();

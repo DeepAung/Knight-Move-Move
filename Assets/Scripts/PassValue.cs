@@ -6,6 +6,13 @@ using System.IO;
 
 public class PassValue : MonoBehaviour
 {
+    [System.Serializable]
+    public struct layer
+    {
+        public char topLayer;
+        public char groundLayer;
+    }
+
     public static PassValue instance;
     public int mapIndex = 0;
     public List<int> mapList;
@@ -13,8 +20,8 @@ public class PassValue : MonoBehaviour
 
     // for tutorials
     public bool isTutorial;
-    public int[] playerLastPos;
     public int popUpIndex;
+    public int stageIndex = 0;
 
     private void Awake()
     {
@@ -22,8 +29,7 @@ public class PassValue : MonoBehaviour
         {
             instance = this;
             isTutorial = true;
-            popUpIndex = -1;
-            playerLastPos = new int[] { 0, 4 };
+            popUpIndex = 0;
             DontDestroyOnLoad(gameObject);
         }
         else

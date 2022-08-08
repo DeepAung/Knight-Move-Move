@@ -21,7 +21,9 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
-    bool isRendering;
+    bool rendered, waiting;
+
+    List<string> stage;
 
     // Start is called before the first frame update
     void Start()
@@ -36,90 +38,126 @@ public class TutorialManager : MonoBehaviour
         string path = Application.streamingAssetsPath + "/Dialogues/Tutorial.txt";
         popUps = System.IO.File.ReadAllLines(path);
         popUpIndex = PassValue.instance.popUpIndex;
-        isRendering = false;
+
+        rendered = false;
+        waiting = false;
+
+        stage = new List<string>() {
+            "04",
+            "06",
+            "16",
+            "36",
+            "44",
+            "41",
+            "01"
+        };
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (popUpIndex == -1)
+        if (!rendered && popUpIndex != -1)
         {
-            StartCoroutine(renderNextPopUp());
+            StopAllCoroutines();
+            StartCoroutine(renderPopUp());
+            rendered = true;
         }
+
         if (popUpIndex == 0)
         {
-            StartCoroutine(renderNextPopUp());
+            if (!waiting)
+            {
+                StopAllCoroutines();
+                StartCoroutine(waitThenGoNextPopUp(2f, 1));
+            }
         }
         else if (popUpIndex == 1)
         {
-            if (playerIsAt(0, 6)) StartCoroutine(renderNextPopUp());
+            if (playerIsAt(1)) goNextPopUp(1);
         }
         else if (popUpIndex == 2)
         {
-            if (playerIsAt(1, 6)) StartCoroutine(renderNextPopUp());
+            if (playerIsAt(2)) goNextPopUp(1);
         }
         else if (popUpIndex == 3)
         {
-            if (playerIsAt(3, 6)) StartCoroutine(renderNextPopUp());
+            if (playerIsAt(3)) goNextPopUp(1);
         }
         else if (popUpIndex == 4)
         {
-            //if (player died) popUpIndex++;
-            if (playerIsAt(4, 4)) StartCoroutine(renderNextPopUp(2));
+            if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass && !waiting)
+            {
+                popUpIndex++;
+                waiting = true;
+            }
+            if (playerIsAt(4)) goNextPopUp(2);
         }
         else if (popUpIndex == 5)
         {
-            if (playerIsAt(4, 4)) StartCoroutine(renderNextPopUp());
+            if (playerIsAt(4)) goNextPopUp(1);
         }
         else if (popUpIndex == 6)
         {
-            if (playerIsAt(4, 1)) StartCoroutine(renderNextPopUp());
+            if (playerIsAt(5)) goNextPopUp(1);
         }
         else if (popUpIndex == 7)
         {
-            //if (player died) popUpIndex++;
-            if (playerIsAt(0, 1)) StartCoroutine(renderNextPopUp(2));
+            if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass && !waiting)
+            {
+                popUpIndex++;
+                waiting = true;
+            }
+            else if (playerIsAt(6)) goNextPopUp(2);
         }
         else if (popUpIndex == 8)
         {
-            if (playerIsAt(0, 1)) StartCoroutine(renderNextPopUp());
+            if (playerIsAt(6)) goNextPopUp(1);
         }
         else if (popUpIndex == 9)
         {
-            if (!isRendering)
-            {
-                isRendering = true;
-                PassValue.instance.playerLastPos = new int[] { 0, 4 };
-            }
+            Debug.Log("------- 9 ---------");
         }
     }
 
-    bool playerIsAt(int i, int j)
+    bool playerIsAt(int index)
     {
-        PassValue.instance.playerLastPos = new int[] { i, j };
-        return (gameManager.myPlayer.position[0] == i && gameManager.myPlayer.position[1] == j);
+
+        if (gameManager.myPlayer.position[0] == int.Parse(stage[index][0].ToString()) && 
+                gameManager.myPlayer.position[1] == int.Parse(stage[index][1].ToString()))
+        {
+            PassValue.instance.stageIndex = index;
+            return true;
+        }
+
+        return false;
     }
 
-    IEnumerator renderNextPopUp(int add = 1)
+    void goNextPopUp(int add)
     {
-        if (isRendering) yield break;
-
-        // save last player position
-        
-
+        Debug.Log("add: " + add);
         popUpIndex += add;
-        isRendering = true;
+        rendered = false;
+    }
 
+    IEnumerator renderPopUp()
+    {
         string str = popUps[popUpIndex];
         popUpText.text = "";
 
         for (int i = 0; i < str.Length; i++)
         {
             popUpText.text += str[i];
-            //yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(0.01f);
         }
+    }
 
-        isRendering = false;
+    IEnumerator waitThenGoNextPopUp(float time, int add)
+    {
+        waiting = true;
+        yield return new WaitForSeconds(time);
 
+        popUpIndex += add;
+        rendered = false;
+        waiting = false;
     }
 }

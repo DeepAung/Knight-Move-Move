@@ -109,12 +109,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("curr: " + topLayer + " " + groundLayer  + " | next: " + newTopLayer + " " + newGroundLayer);
 
 
-        if ('1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
-        {
-            myMap[ni, nj].groundLayer = '.';
-            myPlayer.moveCount += myPotions[newGroundLayer - '1'].power;
-            myPotions[newGroundLayer - '1'].Destroy();
-        }
         if (newTopLayer == 'B')
         {
             for (int it = 0; it < myBreakableStones.Count; it++)
@@ -174,6 +168,13 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (playerCanMove && '1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
+        {
+            myMap[ni, nj].groundLayer = '.';
+            myPlayer.moveCount += myPotions[newGroundLayer - '1'].power;
+            myPotions[newGroundLayer - '1'].Destroy();
+        }
+
         // update swappable spike
         if (!preventSwapSpike) updateSwappableSpikes();
 
@@ -202,21 +203,31 @@ public class GameManager : MonoBehaviour
             }
             else
             {
-                PassValue.instance.mapIndex = PassValue.instance.mapList[
-                    PassValue.instance.mapList.IndexOf(PassValue.instance.mapIndex) + 1
-                ];
+                if (PassValue.instance.isTutorial)
+                {
+                    PassValue.instance.mapIndex = PassValue.instance.mapList[1];
+                    PassValue.instance.isTutorial = false;
+                    PassValue.instance.stageIndex = 0;
+                    PassValue.instance.popUpIndex = 0;
+                }
+                else
+                {
+                    PassValue.instance.mapIndex = PassValue.instance.mapList[
+                        PassValue.instance.mapList.IndexOf(PassValue.instance.mapIndex) + 1
+                    ];
+                }
                 SceneLoader.instance.loadScene(1);
             }
 
             myPlayer.pass = true;
             return true;
         }
-        else if (newGroundLayer == '|')
+        else if (playerCanMove && newGroundLayer == '|')
         {
             StartCoroutine( myPlayer.animationHit() );
             myPlayer.moveCount--;
         }
-        else if (newGroundLayer == '+' || newGroundLayer == '-')
+        else if (playerCanMove && newGroundLayer == '+' || newGroundLayer == '-')
         {
             for (int it = 0; it < mySwappableSpikes.Count; it++)
             {
