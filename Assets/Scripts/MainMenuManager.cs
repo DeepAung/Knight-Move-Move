@@ -31,7 +31,7 @@ public class MainMenuManager : MonoBehaviour
             UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name
         );
 
-        PassValue.instance.mapIndex = mapIndex;
+        PassValue.instance.mapNumber = mapIndex;
 
         if (mapIndex == 0)
         {

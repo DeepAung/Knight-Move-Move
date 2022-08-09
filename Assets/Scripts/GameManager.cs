@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
 
     bool canMove(float dx, float dy)
     {
-        bool playerCanMove = true, preventSwapSpike = false;
+        bool playerCanMove = true;
 
         int   i = myPlayer.position[0],
               j = myPlayer.position[1],
@@ -119,9 +119,6 @@ public class GameManager : MonoBehaviour
                     myBreakableStones[it].Destroy();
                     myPlayer.moveCount--;
 
-                    ni = i; nj = j;
-                    newTopLayer = myMap[ni, nj].topLayer;
-                    newGroundLayer = myMap[ni, nj].groundLayer;
                     playerCanMove = false;
                     break;
                 }
@@ -138,12 +135,7 @@ public class GameManager : MonoBehaviour
                         myMap[nni, nnj].topLayer != ' ' ||
                         myMap[nni, nnj].groundLayer == 'X')
                     {
-                        ni = i; nj = j;
-                        newTopLayer = myMap[ni, nj].topLayer;
-                        newGroundLayer = myMap[ni, nj].groundLayer;
-                        playerCanMove = false;
-                        preventSwapSpike = true;
-                        break;
+                        return false;
                     }
 
                     // swap char
@@ -159,26 +151,52 @@ public class GameManager : MonoBehaviour
 
                     StartCoroutine(myMovableStones[it].moveObject(dx, dy));
 
-                    ni = i; nj = j;
-                    newTopLayer = myMap[ni, nj].topLayer;
-                    newGroundLayer = myMap[ni, nj].groundLayer;
                     playerCanMove = false;
                     break;
                 }
             }
         }
 
-        if (playerCanMove && '1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
+        // update swappable spike
+        updateSwappableSpikes();
+
+        if (!playerCanMove)
+        {
+            if (groundLayer == '|')
+            {
+                StartCoroutine(myPlayer.animationHit());
+                myPlayer.moveCount--;
+            }
+            else if (groundLayer == '+' || groundLayer == '-')
+            {
+                for (int it = 0; it < mySwappableSpikes.Count; it++)
+                {
+                    if (mySwappableSpikes[it].position[0] == ni && mySwappableSpikes[it].position[1] == nj)
+                    {
+                        if (mySwappableSpikes[it].animator.GetBool("isActive"))
+                        {
+                            StartCoroutine(myPlayer.animationHit());
+                            myPlayer.moveCount--;
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        // ----- player can move ----- //
+
+        if ('1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
         {
             myMap[ni, nj].groundLayer = '.';
             myPlayer.moveCount += myPotions[newGroundLayer - '1'].power;
             myPotions[newGroundLayer - '1'].Destroy();
         }
 
-        // update swappable spike
-        if (!preventSwapSpike) updateSwappableSpikes();
-
-        if (playerCanMove && groundLayer == '_')
+        if (groundLayer == '_')
         {
             for (int it = 0; it < myPressurePlates.Count; it++)
             {
@@ -189,14 +207,14 @@ public class GameManager : MonoBehaviour
 
                     myPressurePlates[it].Destroy();
                     mapGenerator.generatePrefabs(i, j, -0.5f, 0.05f, mapGenerator.prefabs[2]);
-                    
+
                 }
             }
         }
 
-        if (playerCanMove && newGroundLayer == 'E')
+        if (newGroundLayer == 'E')
         {
-            if (PassValue.instance.mapIndex == PassValue.instance.mapList[PassValue.instance.mapList.Count - 1])
+            if (PassValue.instance.mapNumber == PassValue.instance.mapList[PassValue.instance.mapList.Count - 1])
             {
                 PassValue.instance.dialogueName = "Outro";
                 SceneLoader.instance.loadScene(2);
@@ -205,15 +223,15 @@ public class GameManager : MonoBehaviour
             {
                 if (PassValue.instance.isTutorial)
                 {
-                    PassValue.instance.mapIndex = PassValue.instance.mapList[1];
+                    PassValue.instance.mapNumber = PassValue.instance.mapList[1];
                     PassValue.instance.isTutorial = false;
                     PassValue.instance.stageIndex = 0;
                     PassValue.instance.popUpIndex = 0;
                 }
                 else
                 {
-                    PassValue.instance.mapIndex = PassValue.instance.mapList[
-                        PassValue.instance.mapList.IndexOf(PassValue.instance.mapIndex) + 1
+                    PassValue.instance.mapNumber = PassValue.instance.mapList[
+                        PassValue.instance.mapList.IndexOf(PassValue.instance.mapNumber) + 1
                     ];
                 }
                 SceneLoader.instance.loadScene(1);
@@ -222,12 +240,12 @@ public class GameManager : MonoBehaviour
             myPlayer.pass = true;
             return true;
         }
-        else if (playerCanMove && newGroundLayer == '|')
+        else if (newGroundLayer == '|')
         {
             StartCoroutine( myPlayer.animationHit() );
             myPlayer.moveCount--;
         }
-        else if (playerCanMove && newGroundLayer == '+' || newGroundLayer == '-')
+        else if (newGroundLayer == '+' || newGroundLayer == '-')
         {
             for (int it = 0; it < mySwappableSpikes.Count; it++)
             {

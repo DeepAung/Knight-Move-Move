@@ -42,7 +42,7 @@ public class MapGenerator : MonoBehaviour
 
         }
 
-        UI.mapNumber.text = PassValue.instance.mapIndex.ToString();
+        UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
         
 
         loadMapFromText();
@@ -55,14 +55,14 @@ public class MapGenerator : MonoBehaviour
     {
         if (PassValue.instance.isTutorial)
         {
-            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapIndex.ToString() + 
+            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapNumber.ToString() + 
                 "-" + PassValue.instance.stageIndex + ".txt";
             mapText = File.ReadAllLines(path);
         }
         else
         {
 
-            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapIndex.ToString() + ".txt";
+            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapNumber.ToString() + ".txt";
             mapText = File.ReadAllLines(path);
         }
 

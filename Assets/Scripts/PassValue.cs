@@ -14,7 +14,7 @@ public class PassValue : MonoBehaviour
     }
 
     public static PassValue instance;
-    public int mapIndex = 0;
+    public int mapNumber = 0;
     public List<int> mapList;
     public string dialogueName;
 
@@ -28,7 +28,7 @@ public class PassValue : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            isTutorial = true;
+            isTutorial = false;
             popUpIndex = 0;
             DontDestroyOnLoad(gameObject);
         }
