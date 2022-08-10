@@ -13,12 +13,14 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     public Animator animator;
 
+    // for Boss
+    public int health = 3;
+
     // --------------------------------------------------------------- //
 
     Vector2 movement;
     int frameCnt = 5;
     Queue<Vector3> myQueue;
-    Vector3 targetPos;
 
     // Start is called before the first frame update
     void Start()
@@ -76,10 +78,21 @@ public class Player : MonoBehaviour
             frameCnt = 5;
         }
 
-        if (!pass && moveCount <= 0)
+        if (PassValue.instance.isBossScene())
         {
-            animationDestroy();
+            if (health <= 0)
+            {
+                animationDestroy();
+            }
         }
+        else
+        {
+            if (!pass && moveCount <= 0)
+            {
+                animationDestroy();
+            }
+        }
+
     }
 
     public void enqueueMove(float x, float y)
@@ -88,7 +101,6 @@ public class Player : MonoBehaviour
 
         position[0] -= (int)y;
         position[1] += (int)x;
-        targetPos = gameObject.transform.position + new Vector3(x, y, 0);
         myQueue.Enqueue(new Vector3(x, y, 0f));
     }
 
@@ -103,7 +115,6 @@ public class Player : MonoBehaviour
         {
             animator.Play("Player_Dead_Left");
         }
-        //Destroy(gameObject, 2.0f);
 
         StartCoroutine( restartScene() );
     }
@@ -127,7 +138,7 @@ public class Player : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(1.5f);
 
-        SceneLoader.instance.loadScene(1);
+        SceneLoader.instance.restartScene();
     }
 
 }

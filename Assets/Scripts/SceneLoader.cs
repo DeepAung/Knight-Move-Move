@@ -17,7 +17,7 @@ public class SceneLoader : MonoBehaviour
     public void loadScene(int index)
     {
         if (PassValue.instance.isTutorial && 
-            SceneManager.GetActiveScene().buildIndex == 1 && 
+            SceneManager.GetActiveScene().buildIndex == 2 && 
             index != 1)
         {
             PassValue.instance.isTutorial = false;
@@ -27,6 +27,21 @@ public class SceneLoader : MonoBehaviour
 
         StartCoroutine( awaitLoadScene(index) );
     }
+
+    public void restartScene()
+    {
+        loadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+    
+    //public void loadNextScene()
+    //{
+    //    loadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //}
+
+    //public void loadPreviousScene()
+    //{
+    //    loadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    //}
 
     public IEnumerator awaitLoadScene(int index)
     {

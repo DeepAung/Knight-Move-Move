@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class GameManager : MonoBehaviour
+public class GameManager_Boss : MonoBehaviour
 {
 
     [System.Serializable]
@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
 
             if (!canMove(movement.x, 0f))
             {
-                if (myPlayer.moveCount <= 0)
+                if (myPlayer.health <= 0)
                 {
                     myPlayer.animationDestroy();
                     return;
@@ -54,7 +54,7 @@ public class GameManager : MonoBehaviour
 
             myPlayer.enqueueMove(movement.x, 0f);
             StartCoroutine(waitForMoving());
-            
+
         }
         else if (!isMoving && movement.y != 0)
         {
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour
 
             if (!canMove(0f, movement.y))
             {
-                if (myPlayer.moveCount <= 0)
+                if (myPlayer.health <= 0)
                 {
                     myPlayer.animationDestroy();
                     return;
@@ -88,12 +88,12 @@ public class GameManager : MonoBehaviour
 
         if (ni < 0 || ni >= n || nj < 0 || nj >= m) return false;
 
-        char topLayer       = myMap[i, j].topLayer,
-             groundLayer    = myMap[i, j].groundLayer,
-             newTopLayer    = myMap[ni, nj].topLayer,
+        char topLayer = myMap[i, j].topLayer,
+             groundLayer = myMap[i, j].groundLayer,
+             newTopLayer = myMap[ni, nj].topLayer,
              newGroundLayer = myMap[ni, nj].groundLayer;
 
-        if (myPlayer.moveCount <= 0) return false;
+        if (myPlayer.health <= 0) return false;
         if (newGroundLayer == 'X') return false;
         if (newTopLayer == 'N') return false;
 
@@ -156,7 +156,7 @@ public class GameManager : MonoBehaviour
             if (groundLayer == '|')
             {
                 StartCoroutine(myPlayer.animationHit());
-                myPlayer.moveCount--;
+                myPlayer.health--;
             }
             else if (groundLayer == '+' || groundLayer == '-')
             {
@@ -167,7 +167,7 @@ public class GameManager : MonoBehaviour
                         if (mySwappableSpikes[it].animator.GetBool("isActive"))
                         {
                             StartCoroutine(myPlayer.animationHit());
-                            myPlayer.moveCount--;
+                            myPlayer.health--;
                         }
 
                         break;
@@ -183,7 +183,7 @@ public class GameManager : MonoBehaviour
         if ('1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
         {
             myMap[ni, nj].groundLayer = '.';
-            myPlayer.moveCount += myPotions[newGroundLayer - '1'].power;
+            myPlayer.health++;
             myPotions[newGroundLayer - '1'].Destroy();
         }
 
@@ -232,8 +232,8 @@ public class GameManager : MonoBehaviour
         }
         else if (newGroundLayer == '|')
         {
-            StartCoroutine( myPlayer.animationHit() );
-            myPlayer.moveCount--;
+            StartCoroutine(myPlayer.animationHit());
+            myPlayer.health--;
         }
         else if (newGroundLayer == '+' || newGroundLayer == '-')
         {
@@ -244,7 +244,7 @@ public class GameManager : MonoBehaviour
                     if (mySwappableSpikes[it].animator.GetBool("isActive"))
                     {
                         StartCoroutine(myPlayer.animationHit());
-                        myPlayer.moveCount--;
+                        myPlayer.health--;
                     }
 
                     break;
@@ -269,7 +269,6 @@ public class GameManager : MonoBehaviour
 
     IEnumerator waitForMoving()
     {
-
         yield return new WaitForSeconds(0.25f);
         isMoving = false;
     }

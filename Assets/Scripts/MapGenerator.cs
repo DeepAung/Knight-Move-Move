@@ -21,7 +21,7 @@ public class MapGenerator : MonoBehaviour
     public pair[] tiles;
     public Tilemap groundTilemap, topTilemap;
     public GameObject[] prefabs;
-    public GameManager gameManager;
+    public GameManager_Boss gameManager;
     public UIManager UI;
 
     string path;
@@ -38,13 +38,12 @@ public class MapGenerator : MonoBehaviour
             Instantiate(passValuePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         }
 
-        UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
+        if (!PassValue.instance.isBossScene()) UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
         
 
         loadMapFromText();
 
         renderMap();
-
     }
 
     void loadMapFromText()
@@ -52,14 +51,18 @@ public class MapGenerator : MonoBehaviour
         if (PassValue.instance.isTutorial)
         {
             path = Application.streamingAssetsPath + "/Maps/Tutorial/0-" + PassValue.instance.stageIndex + ".txt";
-            mapText = File.ReadAllLines(path);
+        }
+        else if (PassValue.instance.isBossScene())
+        {
+            Debug.Log("----------------- BOSS --------------------");
+            path = Application.streamingAssetsPath + "/Maps/Boss/Boss.txt";
         }
         else
         {
-
             path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapNumber.ToString() + ".txt";
-            mapText = File.ReadAllLines(path);
         }
+
+        mapText = File.ReadAllLines(path);
 
         // assign a top line
         firstLine = mapText[0].Split();
@@ -83,7 +86,7 @@ public class MapGenerator : MonoBehaviour
         }
 
         // set myMap length
-        gameManager.myMap = new GameManager.layer[mapText.Length - 1, mapText[1].Length];
+        gameManager.myMap = new GameManager_Boss.layer[mapText.Length - 1, mapText[1].Length];
         gameManager.myPotions = new Potion[firstLine.Length - 3];
 
         // start render map
@@ -207,6 +210,11 @@ public class MapGenerator : MonoBehaviour
 
             }
         }
+    }
+
+    public Vector3 getPos(int i, int j, float h = 0f, float k = 0f)
+    {
+        return new Vector3(offset.x + j, offset.y - i, 0f);
     }
     public void generateTile(int i, int j, Tile tile)
     {

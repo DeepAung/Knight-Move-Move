@@ -60,6 +60,8 @@ public class MapParent : MonoBehaviour
             }
         }
 
+        mapList.Add(int.MaxValue);
+
         mapList.Sort();
 
         PassValue.instance.mapList = new List<int>(mapList);
@@ -89,7 +91,18 @@ public class MapParent : MonoBehaviour
                 button.name = mapList[cnt].ToString();
 
                 TMP_Text buttonText = button.GetComponentInChildren<TMP_Text>();
-                buttonText.text = (mapList[cnt] == 0) ? "O" : toRoman(mapList[cnt]);
+                if (mapList[cnt] == 0)
+                {
+                    buttonText.text = "O";
+                }
+                else if (mapList[cnt] == int.MaxValue) 
+                {
+                    buttonText.text = "BOSS";
+                }
+                else
+                {
+                    buttonText.text = toRoman(mapList[cnt]);
+                }
 
                 // ----------- //
                 buttons[cnt - firstIndex] = button.GetComponent<MapButton>();

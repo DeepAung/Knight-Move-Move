@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        moveCount.text = myPlayer.moveCount.ToString();
+        if (!PassValue.instance.isBossScene()) moveCount.text = myPlayer.moveCount.ToString();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         {
             Time.timeScale = 1;
             // restart scene
-            SceneLoader.instance.loadScene(1);
+            SceneLoader.instance.restartScene();
         }
     }
 
@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
     public void goToMainMenu()
     {
         Time.timeScale = 1;
-        SceneLoader.instance.loadScene(0);
+        SceneLoader.instance.loadScene(0); // MainMenu
     }
 
 

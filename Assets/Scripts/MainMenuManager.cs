@@ -37,11 +37,15 @@ public class MainMenuManager : MonoBehaviour
         {
             PassValue.instance.dialogueName = "Intro";
             PassValue.instance.isTutorial = true;
-            SceneLoader.instance.loadScene(2);
+            SceneLoader.instance.loadScene(1); // Dialogue
+        }
+        else if (buttonName == int.MaxValue)
+        {
+            SceneLoader.instance.loadScene(3); // Boss
         }
         else
         {
-            SceneLoader.instance.loadScene(1);
+            SceneLoader.instance.loadScene(2); // GamePlay
         }
     }
 

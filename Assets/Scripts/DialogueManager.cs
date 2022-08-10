@@ -29,11 +29,11 @@ public class DialogueManager : MonoBehaviour
             {
                 if (PassValue.instance.dialogueName == "Intro")
                 {
-                    SceneLoader.instance.loadScene(1);
+                    SceneLoader.instance.loadScene(2); // GamePlay
                 }
                 else if (PassValue.instance.dialogueName == "Outro")
                 {
-                    SceneLoader.instance.loadScene(0);
+                    SceneLoader.instance.loadScene(0); // MainMenu
                 }
             }
             else

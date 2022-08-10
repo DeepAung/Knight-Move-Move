@@ -15,6 +15,11 @@ public class PassValue : MonoBehaviour
     public int popUpIndex;
     public int stageIndex;
 
+    public bool isBoss
+    {
+        get { return mapNumber == int.MaxValue; }
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -32,5 +37,10 @@ public class PassValue : MonoBehaviour
             Destroy(gameObject);
         }
 
+    }
+
+    public bool isBossScene()
+    {
+        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 3;
     }
 }
