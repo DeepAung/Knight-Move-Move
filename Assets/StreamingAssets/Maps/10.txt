@@ -1,0 +1,9 @@
+8 6 14 3
+ .S. . X X X
+ . . . X X X
+M.M.M. X X X
+ . . . X X X
+ .N. . X X X
+ . .B. X X X
+ . . . . . E
+ .B. .B1 . .

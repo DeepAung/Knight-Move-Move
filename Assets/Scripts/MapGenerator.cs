@@ -29,17 +29,13 @@ public class MapGenerator : MonoBehaviour
     int n, m;
     Vector2Int offset;
 
-    // for tutorial
-    int saveI, saveJ;
-
     // Start is called before the first frame update
     void Awake()
     {
         // for debugging
         if (!PassValue.instance)
         {
-            GameObject result = Instantiate(passValuePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-
+            Instantiate(passValuePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         }
 
         UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
@@ -55,8 +51,7 @@ public class MapGenerator : MonoBehaviour
     {
         if (PassValue.instance.isTutorial)
         {
-            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapNumber.ToString() + 
-                "-" + PassValue.instance.stageIndex + ".txt";
+            path = Application.streamingAssetsPath + "/Maps/Tutorial/0-" + PassValue.instance.stageIndex + ".txt";
             mapText = File.ReadAllLines(path);
         }
         else

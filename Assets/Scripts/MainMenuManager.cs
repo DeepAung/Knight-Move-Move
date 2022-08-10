@@ -27,13 +27,13 @@ public class MainMenuManager : MonoBehaviour
 
     public static void goToScene()
     {
-        int mapIndex = int.Parse(
+        int buttonName = int.Parse(
             UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject.name
         );
 
-        PassValue.instance.mapNumber = mapIndex;
+        PassValue.instance.mapNumber = buttonName;
 
-        if (mapIndex == 0)
+        if (buttonName == 0)
         {
             PassValue.instance.dialogueName = "Intro";
             PassValue.instance.isTutorial = true;

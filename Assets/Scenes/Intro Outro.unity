@@ -268,6 +268,75 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8854645a60e658b4b9caa80967307e09, type: 3}
+--- !u!1001 &470259260
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2319306054100511946, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2770376646783586347, guid: a946e71f1a070014e8876275ca532d28,
+        type: 3}
+      propertyPath: m_Name
+      value: Mouse Cursor
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a946e71f1a070014e8876275ca532d28, type: 3}
 --- !u!1 &813203884
 GameObject:
   m_ObjectHideFlags: 0

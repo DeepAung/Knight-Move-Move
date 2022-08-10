@@ -16,13 +16,16 @@ public class SceneLoader : MonoBehaviour
 
     public void loadScene(int index)
     {
-        StartCoroutine( awaitLoadScene(index) );
-        if (PassValue.instance.isTutorial && index != 1)
+        if (PassValue.instance.isTutorial && 
+            SceneManager.GetActiveScene().buildIndex == 1 && 
+            index != 1)
         {
             PassValue.instance.isTutorial = false;
             PassValue.instance.stageIndex = 0;
             PassValue.instance.popUpIndex = 0;
         }
+
+        StartCoroutine( awaitLoadScene(index) );
     }
 
     public IEnumerator awaitLoadScene(int index)

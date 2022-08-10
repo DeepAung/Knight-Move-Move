@@ -10,8 +10,7 @@ public class TutorialManager : MonoBehaviour
 
     public TMP_Text popUpText;
     public string[] popUps;
-    public int popUpIndex
-    {
+    public int popUpIndex {
         get {
             return PassValue.instance.popUpIndex;
         }
@@ -67,11 +66,10 @@ public class TutorialManager : MonoBehaviour
         {
             if (!waiting)
             {
-                StopAllCoroutines();
                 StartCoroutine(waitThenGoNextPopUp(2f, 1));
             }
         }
-        else if (popUpIndex == 1)
+        if (popUpIndex <= 1)
         {
             if (playerIsAt(1)) goNextPopUp(1);
         }
@@ -115,7 +113,7 @@ public class TutorialManager : MonoBehaviour
         }
         else if (popUpIndex == 9)
         {
-            Debug.Log("------- 9 ---------");
+            // end tutorial
         }
     }
 
@@ -123,7 +121,7 @@ public class TutorialManager : MonoBehaviour
     {
 
         if (gameManager.myPlayer.position[0] == int.Parse(stage[index][0].ToString()) && 
-                gameManager.myPlayer.position[1] == int.Parse(stage[index][1].ToString()))
+            gameManager.myPlayer.position[1] == int.Parse(stage[index][1].ToString()))
         {
             PassValue.instance.stageIndex = index;
             return true;
@@ -134,7 +132,6 @@ public class TutorialManager : MonoBehaviour
 
     void goNextPopUp(int add)
     {
-        Debug.Log("add: " + add);
         popUpIndex += add;
         rendered = false;
     }

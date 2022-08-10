@@ -29,14 +29,6 @@ public class GameManager : MonoBehaviour
     public int n, m;
     bool isMoving = false;
 
-    //void Start()
-    //{
-    //    if (PassValue.instance.isTutorial)
-    //    {
-
-    //    }
-    //}
-
     // Update is called once per frame
     void Update()
     {
@@ -105,8 +97,7 @@ public class GameManager : MonoBehaviour
         if (newGroundLayer == 'X') return false;
         if (newTopLayer == 'N') return false;
 
-        Debug.Log("ij: " + i + " " + j + " | " + "nij: " + ni + " " + nj);
-        Debug.Log("curr: " + topLayer + " " + groundLayer  + " | next: " + newTopLayer + " " + newGroundLayer);
+        Debug.Log($"cur: {i},{j},{topLayer},{groundLayer} | new: {ni},{nj},{newTopLayer},{newGroundLayer}");
 
 
         if (newTopLayer == 'B')
@@ -171,7 +162,7 @@ public class GameManager : MonoBehaviour
             {
                 for (int it = 0; it < mySwappableSpikes.Count; it++)
                 {
-                    if (mySwappableSpikes[it].position[0] == ni && mySwappableSpikes[it].position[1] == nj)
+                    if (mySwappableSpikes[it].position[0] == i && mySwappableSpikes[it].position[1] == j)
                     {
                         if (mySwappableSpikes[it].animator.GetBool("isActive"))
                         {

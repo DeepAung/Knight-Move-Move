@@ -1,14 +1,13 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-
 using TMPro;
+using UnityEngine;
 
 public class MapParent : MonoBehaviour
 {
     public GameObject ButtonPrefab;
     public GameObject arrowLeft, arrowRight;
 
+    [SerializeField]
     List<int> mapList;
     int maxPage, remainder;
     int firstIndex = 0;
@@ -16,14 +15,13 @@ public class MapParent : MonoBehaviour
     MapButton[] buttons;
 
     // for toRoman function
-    static string[] romanLetter = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I", };
-    static int[] romanNumber = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
+    static readonly string[] ROMAN_LETTER = { "M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I", };
+    static readonly int[] ROMAN_NUMBER = { 1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1 };
 
     // Start is called before the first frame update
     void Start()
     {
         buttons = new MapButton[10];
-        mapList = PassValue.instance.mapList;
 
         maxPage = (mapList.Count + 9) / 10; // always round up
         remainder = mapList.Count % 10; // the left over
@@ -34,9 +32,37 @@ public class MapParent : MonoBehaviour
     {
         if (!isLoad && gameObject.activeSelf)
         {
+            loadMaps();
             renderMapButton();
             isLoad = true;
         }
+
+
+        if (firstIndex == 0) arrowLeft.SetActive(false);
+        else arrowLeft.SetActive(true);
+
+        if (firstIndex + 10 > mapList.Count) arrowRight.SetActive(false);
+        else arrowRight.SetActive(true);
+    }
+
+    void loadMaps()
+    {
+        string path = Application.streamingAssetsPath + "/Maps/";
+        var dirInfo = new System.IO.DirectoryInfo(path);
+        var files = dirInfo.GetFiles("*.txt");
+
+        for (int i = 0; i < files.Length; i++)
+        {
+            bool canParse = int.TryParse(files[i].Name[0..^4], out int result);
+            if (canParse)
+            {
+                mapList.Add(result);
+            }
+        }
+
+        mapList.Sort();
+
+        PassValue.instance.mapList = new List<int>(mapList);
     }
 
     void renderMapButton()
@@ -94,10 +120,10 @@ public class MapParent : MonoBehaviour
         int i = 0;
         while (num > 0)
         {
-            if (num >= romanNumber[i])
+            if (num >= ROMAN_NUMBER[i])
             {
-                num -= romanNumber[i];
-                romanStr += romanLetter[i];
+                num -= ROMAN_NUMBER[i];
+                romanStr += ROMAN_LETTER[i];
             }
             else
             {

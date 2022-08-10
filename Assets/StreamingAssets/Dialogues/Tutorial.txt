@@ -1,4 +1,4 @@
-First, your remaining move count is on the left-button.
+First, your remaining move count is on the left-buttom. And on right-top is a map number.
 As you can see your move count is not enough to go to the goal. you need to collect a potion to increase your move count.
 So sad, but you cannot go that path any more, let go down.
 In front of you is a breakable object. when you move to that cell, the object will be broken(you will lose 1 move count).
