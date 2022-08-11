@@ -5,6 +5,8 @@ using UnityEngine;
 public class Boss_Idle : StateMachineBehaviour
 {
     Boss boss;
+    bool waiting = false;
+    float time;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -15,8 +17,21 @@ public class Boss_Idle : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        float time = Random.Range(2f, 4f);
-        boss.attack(time);
+        if (!waiting)
+        {
+            time = 4f;
+            waiting = true;
+        }
+        else
+        {
+            time -= Time.deltaTime;
+            //Debug.Log("time: " + time);
+            if (time <= 0)
+            {
+                animator.SetTrigger("Attack");
+                waiting = false;
+            }
+        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

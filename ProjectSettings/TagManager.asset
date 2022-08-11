@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameManager_Boss
+  - PlayerHealthBar
   layers:
   - Default
   - TransparentFX

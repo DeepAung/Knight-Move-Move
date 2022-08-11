@@ -36,48 +36,29 @@ public class GameManager : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (!isMoving && movement.x != 0)
+        if (!isMoving)
         {
             isMoving = true;
 
-            if (!canMove(movement.x, 0f))
+            if (movement.x != 0) tryToMove(movement.x, 0f);
+            else if (movement.y != 0) tryToMove(0f, movement.y);
+            else
             {
-                if (myPlayer.moveCount <= 0)
-                {
-                    myPlayer.animationDestroy();
-                    return;
-                }
-
-                StartCoroutine(waitForMoving());
+                isMoving = false;
                 return;
             }
 
-            myPlayer.enqueueMove(movement.x, 0f);
-            StartCoroutine(waitForMoving());
-            
-        }
-        else if (!isMoving && movement.y != 0)
-        {
-            isMoving = true;
-
-            if (!canMove(0f, movement.y))
+            if (!myPlayer.pass && myPlayer.moveCount <= 0)
             {
-                if (myPlayer.moveCount <= 0)
-                {
-                    myPlayer.animationDestroy();
-                    return;
-                }
-
-                StartCoroutine(waitForMoving());
+                myPlayer.animationDestroy();
                 return;
             }
 
-            myPlayer.enqueueMove(0f, movement.y);
-            StartCoroutine(waitForMoving());
+            StartCoroutine(waitForNextMoving());
         }
     }
 
-    bool canMove(float dx, float dy)
+    void tryToMove(float dx, float dy)
     {
         bool playerCanMove = true;
 
@@ -86,16 +67,16 @@ public class GameManager : MonoBehaviour
              ni = i - (int)dy,
              nj = j + (int)dx;
 
-        if (ni < 0 || ni >= n || nj < 0 || nj >= m) return false;
+        if (ni < 0 || ni >= n || nj < 0 || nj >= m) return;
 
         char topLayer       = myMap[i, j].topLayer,
              groundLayer    = myMap[i, j].groundLayer,
              newTopLayer    = myMap[ni, nj].topLayer,
              newGroundLayer = myMap[ni, nj].groundLayer;
 
-        if (myPlayer.moveCount <= 0) return false;
-        if (newGroundLayer == 'X') return false;
-        if (newTopLayer == 'N') return false;
+        if (myPlayer.moveCount <= 0) return;
+        if (newGroundLayer == 'X') return;
+        if (newTopLayer == 'N') return;
 
         Debug.Log($"cur: {i},{j},{topLayer},{groundLayer} | new: {ni},{nj},{newTopLayer},{newGroundLayer}");
 
@@ -125,8 +106,8 @@ public class GameManager : MonoBehaviour
                     if (nni < 0 || nni >= n || nnj < 0 || nnj >= m ||
                         myMap[nni, nnj].topLayer != ' ' ||
                         myMap[nni, nnj].groundLayer == 'X')
-                    {
-                        return false;
+                    { // if cannot move.
+                        return;
                     }
 
                     // swap char
@@ -140,7 +121,7 @@ public class GameManager : MonoBehaviour
 
                     myPlayer.moveCount--;
 
-                    StartCoroutine(myMovableStones[it].moveObject(dx, dy));
+                    StartCoroutine(myMovableStones[it].moveTo(dx, dy));
 
                     playerCanMove = false;
                     break;
@@ -148,15 +129,15 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        // update swappable spike
         updateSwappableSpikes();
 
         if (!playerCanMove)
         {
+            Debug.Log("player can't move");
+
             if (groundLayer == '|')
             {
-                StartCoroutine(myPlayer.animationHit());
-                myPlayer.moveCount--;
+                myPlayer.getDamage();
             }
             else if (groundLayer == '+' || groundLayer == '-')
             {
@@ -166,8 +147,7 @@ public class GameManager : MonoBehaviour
                     {
                         if (mySwappableSpikes[it].animator.GetBool("isActive"))
                         {
-                            StartCoroutine(myPlayer.animationHit());
-                            myPlayer.moveCount--;
+                            myPlayer.getDamage();
                         }
 
                         break;
@@ -175,10 +155,13 @@ public class GameManager : MonoBehaviour
                 }
             }
 
-            return false;
+            return;
         }
 
-        // ----- player can move ----- //
+        // ----------------- player can move ----------------- //
+
+        myPlayer.moveCount--;
+        myPlayer.enqueueMove(dx, dy);
 
         if ('1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
         {
@@ -228,12 +211,11 @@ public class GameManager : MonoBehaviour
             }
 
             myPlayer.pass = true;
-            return true;
+            return;
         }
         else if (newGroundLayer == '|')
         {
-            StartCoroutine( myPlayer.animationHit() );
-            myPlayer.moveCount--;
+            myPlayer.getDamage();
         }
         else if (newGroundLayer == '+' || newGroundLayer == '-')
         {
@@ -243,16 +225,13 @@ public class GameManager : MonoBehaviour
                 {
                     if (mySwappableSpikes[it].animator.GetBool("isActive"))
                     {
-                        StartCoroutine(myPlayer.animationHit());
-                        myPlayer.moveCount--;
+                        myPlayer.getDamage();
                     }
 
                     break;
                 }
             }
         }
-
-        return playerCanMove;
     }
 
     void updateSwappableSpikes()
@@ -267,7 +246,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator waitForMoving()
+    IEnumerator waitForNextMoving()
     {
 
         yield return new WaitForSeconds(0.25f);

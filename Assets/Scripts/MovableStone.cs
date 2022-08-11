@@ -14,7 +14,7 @@ public class MovableStone : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public IEnumerator moveObject(float dx, float dy)
+    public IEnumerator moveTo(float dx, float dy)
     {
         for (int i = 0; i < 5; i++)
         {

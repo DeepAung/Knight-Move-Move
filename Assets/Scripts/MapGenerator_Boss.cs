@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using System.IO;
 
-public class MapGenerator : MonoBehaviour
+public class MapGenerator_Boss : MonoBehaviour
 {
 
     [System.Serializable]
@@ -21,7 +21,7 @@ public class MapGenerator : MonoBehaviour
     public pair[] tiles;
     public Tilemap groundTilemap, topTilemap;
     public GameObject[] prefabs;
-    public GameManager gameManager;
+    public GameManager_Boss gameManager;
     public UIManager UI;
 
     string path;
@@ -38,8 +38,6 @@ public class MapGenerator : MonoBehaviour
             Instantiate(passValuePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         }
 
-        if (!PassValue.instance.isBossScene()) UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
-        
 
         loadMapFromText();
 
@@ -48,20 +46,7 @@ public class MapGenerator : MonoBehaviour
 
     void loadMapFromText()
     {
-        if (PassValue.instance.isTutorial)
-        {
-            path = Application.streamingAssetsPath + "/Maps/Tutorial/0-" + PassValue.instance.stageIndex + ".txt";
-        }
-        else if (PassValue.instance.isBossScene())
-        {
-            Debug.Log("----------------- BOSS --------------------");
-            path = Application.streamingAssetsPath + "/Maps/Boss/Boss.txt";
-        }
-        else
-        {
-            path = Application.streamingAssetsPath + "/Maps/" + PassValue.instance.mapNumber.ToString() + ".txt";
-        }
-
+        path = Application.streamingAssetsPath + "/Maps/Boss/Boss.txt";
         mapText = File.ReadAllLines(path);
 
         // assign a top line
@@ -71,7 +56,7 @@ public class MapGenerator : MonoBehaviour
 
         offset.x = -m / 2;
         offset.y = n / 2 - 1;
-        
+
     }
 
     void renderMap()
@@ -86,16 +71,16 @@ public class MapGenerator : MonoBehaviour
         }
 
         // set myMap length
-        gameManager.myMap = new GameManager.layer[mapText.Length - 1, mapText[1].Length];
-        gameManager.myPotions = new Potion[firstLine.Length - 3];
+        gameManager.myMap = new GameManager_Boss.layer[mapText.Length - 1, mapText[1].Length];
+        gameManager.myMapObj = new GameManager_Boss.layerObj[mapText.Length - 1, mapText[1].Length];
 
         // start render map
-        for (int i = 0; i+1 < mapText.Length; i++)
+        for (int i = 0; i + 1 < mapText.Length; i++)
         {
-            for (int j = 0; j*2 < mapText[i+1].Length; j++)
+            for (int j = 0; j * 2 < mapText[i + 1].Length; j++)
             {
-                char topLayer = mapText[i+1][j*2],
-                     groundLayer = mapText[i+1][j*2 + 1];
+                char topLayer = mapText[i + 1][j * 2],
+                     groundLayer = mapText[i + 1][j * 2 + 1];
 
                 // gradually update myMap
                 gameManager.myMap[i, j].topLayer = topLayer;
@@ -109,7 +94,7 @@ public class MapGenerator : MonoBehaviour
                     var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
                         .GetComponent<Player>();
 
-                    playerObj.position = new int[2] {i, j};
+                    playerObj.position = new int[2] { i, j };
                     playerObj.moveCount = int.Parse(firstLine[2]);
                     gameManager.myPlayer = playerObj;
                     UI.myPlayer = playerObj;
@@ -121,21 +106,23 @@ public class MapGenerator : MonoBehaviour
                 }
                 else if (topLayer == 'B') // breakable stone
                 {
-                    var breakableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[3])
-                        .GetComponent<BreakableStone>();
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[3]);
 
-                    breakableStoneObj.position[0] = i;
-                    breakableStoneObj.position[1] = j;
-                    gameManager.myBreakableStones.Add(breakableStoneObj);
+                    //gameObj
+                    //    .GetComponent<BreakableStone>()
+                    //    .position = new int[2] { i, j };
+
+                    gameManager.myMapObj[i, j].topLayer = gameObj;
+                    //gameManager.myMapObj[i, j].topLayer = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[3]);
                 }
                 else if (topLayer == 'M') // movable stone
                 {
-                    var movableStoneObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[4])
-                        .GetComponent<MovableStone>();
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[4]);
+                    //gameObj
+                    //    .GetComponent<MovableStone>()
+                    //    .position = new int[2] { i, j };
 
-                    movableStoneObj.position[0] = i;
-                    movableStoneObj.position[1] = j;
-                    gameManager.myMovableStones.Add(movableStoneObj);
+                    gameManager.myMapObj[i, j].topLayer = gameObj;
                 }
                 // end render
 
@@ -157,50 +144,58 @@ public class MapGenerator : MonoBehaviour
                 else if ('1' <= groundLayer && groundLayer <= '9') // potions
                 {
                     generateTile(i, j, tiles[1].tile); // gen ground layer
-                    var potionObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[1])
-                        .GetComponent<Potion>();
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[1]);
 
-                    potionObj.power = int.Parse(firstLine[groundLayer - '1' + 3]);
-                    gameManager.myPotions[groundLayer - '1'] = potionObj;
+                    gameObj
+                        .GetComponent<Potion>()
+                        .power = int.Parse(firstLine[groundLayer - '1' + 3]);
+
+                    gameManager.myMapObj[i, j].groundLayer = gameObj;
                 }
                 else if (groundLayer == '_') // pressure plate
                 {
                     generateTile(i, j, tiles[1].tile); // gen ground layer
-                    var pressurePlateObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[6])
-                        .GetComponent<PressurePlate>();
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[6]);
 
-                    pressurePlateObj.position[0] = i;
-                    pressurePlateObj.position[1] = j;
-                    gameManager.myPressurePlates.Add(pressurePlateObj);
+                    //gameObj.position[0] = i;
+                    //gameObj.position[1] = j;
+                    gameManager.myMapObj[i, j].groundLayer = gameObj;
                 }
                 else if (groundLayer == '|') // normal spike
                 {
-                    var normalSpikeObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[7])
-                        .GetComponent<NormalSpike>();
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[7]);
 
-                    normalSpikeObj.position[0] = i;
-                    normalSpikeObj.position[1] = j;
-                    gameManager.myNormalSpikes.Add(normalSpikeObj);
+                    //gameObj.position[0] = i;
+                    //gameObj.position[1] = j;
+                    gameManager.myMapObj[i, j].groundLayer = gameObj;
                 }
                 else if (groundLayer == '+') // swappable spike +
                 {
-                    var swappableSpikeObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[8])
-                        .GetComponent<SwappableSpike>();
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[8]);
 
-                    swappableSpikeObj.position[0] = i;
-                    swappableSpikeObj.position[1] = j;
-                    swappableSpikeObj.startWith = true;
-                    gameManager.mySwappableSpikes.Add(swappableSpikeObj);
+                    var script = gameObj.GetComponent<SwappableSpike>();
+                    script.startWith = true;
+                    gameManager.mySwappableSpikes.Add(script);
+
+                    gameManager.myMapObj[i, j].groundLayer = gameObj;
+
+                    //gameObj.position[0] = i;
+                    //gameObj.position[1] = j;
+                    //gameObj.startWith = true;
                 }
                 else if (groundLayer == '-') // swappable spike -
                 {
-                    var swappableSpikeObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[8])
-                        .GetComponent<SwappableSpike>();
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[8]);
 
-                    swappableSpikeObj.position[0] = i;
-                    swappableSpikeObj.position[1] = j;
-                    swappableSpikeObj.startWith = false;
-                    gameManager.mySwappableSpikes.Add(swappableSpikeObj);
+                    var script = gameObj.GetComponent<SwappableSpike>();
+                    script.startWith = false;
+                    gameManager.mySwappableSpikes.Add(script);
+
+                    gameManager.myMapObj[i, j].groundLayer = gameObj;
+
+                    //gameObj.position[0] = i;
+                    //gameObj.position[1] = j;
+                    //gameObj.startWith = false;
                 }
                 else
                 {
@@ -224,7 +219,7 @@ public class MapGenerator : MonoBehaviour
 
     public GameObject generatePrefabs(int i, int j, float h, float k, GameObject obj)
     {
-        return Instantiate(obj, new Vector3(offset.x+1 + j + h, offset.y - i + k, 0), Quaternion.identity);
+        return Instantiate(obj, new Vector3(offset.x + 1 + j + h, offset.y - i + k, 0), Quaternion.identity);
     }
 
 }

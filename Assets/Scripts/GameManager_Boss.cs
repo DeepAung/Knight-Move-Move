@@ -13,16 +13,19 @@ public class GameManager_Boss : MonoBehaviour
         public char groundLayer;
     }
 
-    public MapGenerator mapGenerator;
+    [System.Serializable]
+    public struct layerObj
+    {
+        public GameObject topLayer;
+        public GameObject groundLayer;
+    }
+
+    public MapGenerator_Boss mapGenerator;
 
     public Player myPlayer;
-    public Potion[] myPotions;
-    public List<BreakableStone> myBreakableStones;
-    public List<MovableStone> myMovableStones;
-    public List<PressurePlate> myPressurePlates;
-    public List<NormalSpike> myNormalSpikes;
     public List<SwappableSpike> mySwappableSpikes;
     public layer[,] myMap;
+    public layerObj[,] myMapObj;
 
     Vector2 movement = new Vector2(0f, 0f);
 
@@ -36,48 +39,29 @@ public class GameManager_Boss : MonoBehaviour
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
 
-        if (!isMoving && movement.x != 0)
+        if (!isMoving)
         {
             isMoving = true;
 
-            if (!canMove(movement.x, 0f))
+            if (movement.x != 0) tryToMove(movement.x, 0f);
+            else if (movement.y != 0) tryToMove(0f, movement.y);
+            else
             {
-                if (myPlayer.health <= 0)
-                {
-                    myPlayer.animationDestroy();
-                    return;
-                }
-
-                StartCoroutine(waitForMoving());
+                isMoving = false;
                 return;
             }
 
-            myPlayer.enqueueMove(movement.x, 0f);
-            StartCoroutine(waitForMoving());
-
-        }
-        else if (!isMoving && movement.y != 0)
-        {
-            isMoving = true;
-
-            if (!canMove(0f, movement.y))
+            if (myPlayer.health <= 0)
             {
-                if (myPlayer.health <= 0)
-                {
-                    myPlayer.animationDestroy();
-                    return;
-                }
-
-                StartCoroutine(waitForMoving());
+                myPlayer.animationDestroy();
                 return;
             }
 
-            myPlayer.enqueueMove(0f, movement.y);
-            StartCoroutine(waitForMoving());
+            StartCoroutine(waitForNextMoving());
         }
     }
 
-    bool canMove(float dx, float dy)
+    void tryToMove(float dx, float dy)
     {
         bool playerCanMove = true;
 
@@ -86,173 +70,121 @@ public class GameManager_Boss : MonoBehaviour
              ni = i - (int)dy,
              nj = j + (int)dx;
 
-        if (ni < 0 || ni >= n || nj < 0 || nj >= m) return false;
+        if (ni < 0 || ni >= n || nj < 0 || nj >= m) return;
 
         char topLayer = myMap[i, j].topLayer,
              groundLayer = myMap[i, j].groundLayer,
              newTopLayer = myMap[ni, nj].topLayer,
              newGroundLayer = myMap[ni, nj].groundLayer;
 
-        if (myPlayer.health <= 0) return false;
-        if (newGroundLayer == 'X') return false;
-        if (newTopLayer == 'N') return false;
+        if (myPlayer.health <= 0) return;
+        if (newGroundLayer == 'X') return;
+        if (newTopLayer == 'N') return;
 
         Debug.Log($"cur: {i},{j},{topLayer},{groundLayer} | new: {ni},{nj},{newTopLayer},{newGroundLayer}");
 
 
         if (newTopLayer == 'B')
         {
-            for (int it = 0; it < myBreakableStones.Count; it++)
-            {
-                if (myBreakableStones[it].position[0] == ni && myBreakableStones[it].position[1] == nj)
-                {
-                    myMap[ni, nj].topLayer = ' ';
-                    myBreakableStones[it].Destroy();
-                    myPlayer.moveCount--;
+            myMap[ni, nj].topLayer = ' ';
+            var script = myMapObj[ni, nj].topLayer.GetComponent<BreakableStone>();
+            script.Destroy();
 
-                    playerCanMove = false;
-                    break;
-                }
-            }
+            playerCanMove = false;
         }
         else if (newTopLayer == 'M')
         {
-            for (int it = 0; it < myMovableStones.Count; it++)
-            {
-                if (myMovableStones[it].position[0] == ni && myMovableStones[it].position[1] == nj)
-                {
-                    int nni = ni - (int)dy, nnj = nj + (int)dx;
-                    if (nni < 0 || nni >= n || nnj < 0 || nnj >= m ||
-                        myMap[nni, nnj].topLayer != ' ' ||
-                        myMap[nni, nnj].groundLayer == 'X')
-                    {
-                        return false;
-                    }
-
-                    // swap char
-                    char temp = myMap[ni, nj].topLayer;
-                    myMap[ni, nj].topLayer = myMap[nni, nnj].topLayer;
-                    myMap[nni, nnj].topLayer = temp;
-
-                    //update in myMovableStones
-                    myMovableStones[it].position[0] = nni;
-                    myMovableStones[it].position[1] = nnj;
-
-                    myPlayer.moveCount--;
-
-                    StartCoroutine(myMovableStones[it].moveObject(dx, dy));
-
-                    playerCanMove = false;
-                    break;
-                }
+            int nni = ni - (int)dy, nnj = nj + (int)dx;
+            if (nni < 0 || nni >= n || nnj < 0 || nnj >= m ||
+                myMap[nni, nnj].topLayer != ' ' ||
+                myMap[nni, nnj].groundLayer == 'X')
+            { // if cannot move.
+                return;
             }
+
+            // swap char
+            char temp = myMap[ni, nj].topLayer;
+            myMap[ni, nj].topLayer = myMap[nni, nnj].topLayer;
+            myMap[nni, nnj].topLayer = temp;
+
+            var script = myMapObj[ni, nj].topLayer.GetComponent<MovableStone>();
+            StartCoroutine(script.moveTo(dx, dy));
+
+            // swap gameObject
+            GameObject temp2 = myMapObj[ni, nj].topLayer;
+            myMapObj[ni, nj].topLayer = myMapObj[nni, nnj].topLayer;
+            myMapObj[nni, nnj].topLayer = temp2;
+
+
+            playerCanMove = false;
         }
 
-        // update swappable spike
         updateSwappableSpikes();
 
         if (!playerCanMove)
         {
+            Debug.Log("player can't move");
+
             if (groundLayer == '|')
             {
-                StartCoroutine(myPlayer.animationHit());
-                myPlayer.health--;
+                myPlayer.getDamage();
             }
             else if (groundLayer == '+' || groundLayer == '-')
             {
-                for (int it = 0; it < mySwappableSpikes.Count; it++)
+                var script = myMapObj[i, j].groundLayer.GetComponent<SwappableSpike>();
+                if (script.animator.GetBool("isActive"))
                 {
-                    if (mySwappableSpikes[it].position[0] == i && mySwappableSpikes[it].position[1] == j)
-                    {
-                        if (mySwappableSpikes[it].animator.GetBool("isActive"))
-                        {
-                            StartCoroutine(myPlayer.animationHit());
-                            myPlayer.health--;
-                        }
-
-                        break;
-                    }
+                    myPlayer.getDamage();
                 }
             }
 
-            return false;
+            return;
         }
 
-        // ----- player can move ----- //
+        // ----------------- player can move ----------------- //
 
-        if ('1' <= newGroundLayer && newGroundLayer <= '9' && myPotions[newGroundLayer - '1'])
+        myPlayer.enqueueMove(dx, dy);
+
+        if ('1' <= newGroundLayer && newGroundLayer <= '9')
         {
             myMap[ni, nj].groundLayer = '.';
-            myPlayer.health++;
-            myPotions[newGroundLayer - '1'].Destroy();
+
+            var script = myMapObj[ni, nj].groundLayer.GetComponent<Potion>();
+            myPlayer.health += script.power;
+            script.Destroy();
         }
 
         if (groundLayer == '_')
         {
-            for (int it = 0; it < myPressurePlates.Count; it++)
-            {
-                if (myPressurePlates[it].position[0] == i && myPressurePlates[it].position[1] == j)
-                {
-                    myMap[i, j].topLayer = 'N';
-                    myMap[i, j].groundLayer = '.';
+            myMap[i, j].topLayer = 'N';
+            myMap[i, j].groundLayer = '.';
 
-                    myPressurePlates[it].Destroy();
-                    mapGenerator.generatePrefabs(i, j, -0.5f, 0.05f, mapGenerator.prefabs[2]);
+            var script = myMapObj[i, j].groundLayer.GetComponent<PressurePlate>();
+            script.Destroy();
 
-                }
-            }
+            mapGenerator.generatePrefabs(i, j, -0.5f, 0.05f, mapGenerator.prefabs[2]);
         }
 
         if (newGroundLayer == 'E')
         {
-            if (PassValue.instance.mapNumber == PassValue.instance.mapList[PassValue.instance.mapList.Count - 2])
-            {
-                SceneLoader.instance.loadScene(3); // Boss
-            }
-            else
-            {
-                if (PassValue.instance.isTutorial)
-                {
-                    PassValue.instance.mapNumber = PassValue.instance.mapList[1];
-                    PassValue.instance.isTutorial = false;
-                    PassValue.instance.stageIndex = 0;
-                    PassValue.instance.popUpIndex = 0;
-                }
-                else
-                {
-                    PassValue.instance.mapNumber = PassValue.instance.mapList[
-                        PassValue.instance.mapList.IndexOf(PassValue.instance.mapNumber) + 1
-                    ];
-                }
-                SceneLoader.instance.loadScene(2); // GamePlay
-            }
+            PassValue.instance.dialogueName = "Outro";
+            SceneLoader.instance.loadScene(1);
 
             myPlayer.pass = true;
-            return true;
+            return;
         }
         else if (newGroundLayer == '|')
         {
-            StartCoroutine(myPlayer.animationHit());
-            myPlayer.health--;
+            myPlayer.getDamage();
         }
         else if (newGroundLayer == '+' || newGroundLayer == '-')
         {
-            for (int it = 0; it < mySwappableSpikes.Count; it++)
+            var script = myMapObj[ni, nj].groundLayer.GetComponent<SwappableSpike>();
+            if (script.animator.GetBool("isActive"))
             {
-                if (mySwappableSpikes[it].position[0] == ni && mySwappableSpikes[it].position[1] == nj)
-                {
-                    if (mySwappableSpikes[it].animator.GetBool("isActive"))
-                    {
-                        StartCoroutine(myPlayer.animationHit());
-                        myPlayer.health--;
-                    }
-
-                    break;
-                }
+                myPlayer.getDamage();
             }
         }
-
-        return playerCanMove;
     }
 
     void updateSwappableSpikes()
@@ -267,8 +199,9 @@ public class GameManager_Boss : MonoBehaviour
         }
     }
 
-    IEnumerator waitForMoving()
+    IEnumerator waitForNextMoving()
     {
+
         yield return new WaitForSeconds(0.25f);
         isMoving = false;
     }

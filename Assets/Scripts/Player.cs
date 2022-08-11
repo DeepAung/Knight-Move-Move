@@ -14,7 +14,17 @@ public class Player : MonoBehaviour
     public Animator animator;
 
     // for Boss
-    public int health = 3;
+    private int _health;
+    public int health {
+        get {
+            return _health;
+        }
+        set {
+            healthBar.setHealth(value);
+            _health = value;
+        }
+    }
+    public HealthBar healthBar;
 
     // --------------------------------------------------------------- //
 
@@ -25,6 +35,13 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (PassValue.instance.isBossScene())
+        {
+            healthBar = GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<HealthBar>();
+            healthBar.setMaxHealth(3);
+            health = 3;
+        }
+
         moveSpeed = 10f;
         myQueue = new Queue<Vector3>();
     }
@@ -42,23 +59,16 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         playerMoveKeyboard();
 
     }
 
+
     void playerAnimationController()
     {
-        animator.SetFloat("Vertical", movement.y);
         animator.SetFloat("Speed", movement.sqrMagnitude);
 
-        if (myQueue.Count == 0) return;
-
-        Vector2 dummy = myQueue.Peek();
-        if (dummy.x == 0) return;
-
-        animator.SetFloat("Face", dummy.x);
-        animator.SetFloat("Horizontal", dummy.x);
+        if (movement.x != 0) animator.SetFloat("Face", movement.x);
 
     }
 
@@ -95,10 +105,22 @@ public class Player : MonoBehaviour
 
     }
 
+    public void getDamage(int num = 1)
+    {
+        if (PassValue.instance.isBossScene())
+        {
+            health -= num;
+            if (health > 0) animator.SetTrigger("Hit");
+        }
+        else
+        {
+            moveCount -= num;
+            if (moveCount > 0) animator.SetTrigger("Hit");
+        }
+    }
+
     public void enqueueMove(float x, float y)
     {
-        moveCount--;
-
         position[0] -= (int)y;
         position[1] += (int)x;
         myQueue.Enqueue(new Vector3(x, y, 0f));
@@ -106,31 +128,9 @@ public class Player : MonoBehaviour
 
     public void animationDestroy()
     {
-
-        if (animator.GetFloat("Face") >= 0f)
-        {
-            animator.Play("Player_Dead_Right");
-        }
-        else
-        {
-            animator.Play("Player_Dead_Left");
-        }
+        animator.SetTrigger("Dead");
 
         StartCoroutine( restartScene() );
-    }
-
-    public IEnumerator animationHit()
-    {
-        yield return new WaitForEndOfFrame();
-
-        if (animator.GetFloat("Face") >= 0f)
-        {
-            animator.Play("Player_Hit_Right");
-        }
-        else
-        {
-            animator.Play("Player_Hit_Left");
-        }
     }
 
     public IEnumerator restartScene()
