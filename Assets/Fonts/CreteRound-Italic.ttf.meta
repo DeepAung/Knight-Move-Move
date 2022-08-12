@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 17bac685374ec864e99095941f6abe3f
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontNames:
+  - Crete Round
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: a0cc2477c0ae7d64b90c53759bc58fab, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -18,8 +18,9 @@ public class HealthBar : MonoBehaviour
         slider.value = health;
     }
 
-    public void minusHealth(int num)
+    public int getHealth()
     {
-        slider.value -= num;
+        //Debug.Log("float vs int: " + slider.value + " | " + (int)slider.value);
+        return (int)slider.value;
     }
 }

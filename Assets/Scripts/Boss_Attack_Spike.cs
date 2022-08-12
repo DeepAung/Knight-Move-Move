@@ -2,46 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Boss_Idle : StateMachineBehaviour
+public class Boss_Attack_Spike : StateMachineBehaviour
 {
     Boss boss;
-    bool waiting = false;
-    float time;
-    int attackType = 0;
+    GameManager_Boss gameManager;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         boss = animator.GetComponent<Boss>();
+        gameManager = boss.gameManager;
+        
+        bool rowOrCol = Random.Range(0, 2) == 1;
+        int index;
+
+        if (rowOrCol) index = Random.Range(0, gameManager.n);
+        else index = Random.Range(0, gameManager.m);
+
+        boss.StartCoroutine( boss.attackSpike(rowOrCol, index) );
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!waiting)
-        {
-            time = 2f;
-            waiting = true;
-        }
-        else
-        {
-            time -= Time.deltaTime;
-            //Debug.Log("time: " + time);
-            if (time <= 0)
-            {
-                if (attackType == 0)
-                {
-                    animator.SetTrigger("Attack_MovableStone");
-                }
-                else
-                {
-                    animator.SetTrigger("Attack_Spike");
-                }
-                attackType = 1 - attackType;
 
-                waiting = false;
-            }
-        }
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

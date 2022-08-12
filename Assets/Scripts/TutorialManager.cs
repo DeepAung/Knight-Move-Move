@@ -55,7 +55,7 @@ public class TutorialManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!rendered && popUpIndex != -1)
+        if (!rendered)
         {
             StopAllCoroutines();
             StartCoroutine(renderPopUp());
@@ -83,10 +83,11 @@ public class TutorialManager : MonoBehaviour
         }
         else if (popUpIndex == 4)
         {
-            if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass && !waiting)
+            if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass)
             {
                 popUpIndex++;
-                waiting = true;
+                //waiting = true;
+                //goNextPopUp(1);
             }
             if (playerIsAt(4)) goNextPopUp(2);
         }
@@ -100,10 +101,10 @@ public class TutorialManager : MonoBehaviour
         }
         else if (popUpIndex == 7)
         {
-            if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass && !waiting)
+            if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass)
             {
                 popUpIndex++;
-                waiting = true;
+                //goNextPopUp(1);
             }
             else if (playerIsAt(6)) goNextPopUp(2);
         }

@@ -17,11 +17,10 @@ public class Player : MonoBehaviour
     private int _health;
     public int health {
         get {
-            return _health;
+            return healthBar.getHealth();
         }
         set {
             healthBar.setHealth(value);
-            _health = value;
         }
     }
     public HealthBar healthBar;
@@ -35,11 +34,10 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (PassValue.instance.isBossScene())
+        if (PassValue.instance.isBossScene)
         {
             healthBar = GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<HealthBar>();
-            healthBar.setMaxHealth(3);
-            health = 3;
+            healthBar.setMaxHealth(100);
         }
 
         moveSpeed = 10f;
@@ -88,7 +86,7 @@ public class Player : MonoBehaviour
             frameCnt = 5;
         }
 
-        if (PassValue.instance.isBossScene())
+        if (PassValue.instance.isBossScene)
         {
             if (health <= 0)
             {
@@ -107,7 +105,7 @@ public class Player : MonoBehaviour
 
     public void getDamage(int num = 1)
     {
-        if (PassValue.instance.isBossScene())
+        if (PassValue.instance.isBossScene)
         {
             health -= num;
             if (health > 0) animator.SetTrigger("Hit");

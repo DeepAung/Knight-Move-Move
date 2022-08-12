@@ -60,7 +60,8 @@ public class MapParent : MonoBehaviour
             }
         }
 
-        mapList.Add(int.MaxValue);
+        // boss map
+        //mapList.Add(int.MaxValue);
 
         mapList.Sort();
 

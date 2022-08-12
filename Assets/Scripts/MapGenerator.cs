@@ -38,7 +38,7 @@ public class MapGenerator : MonoBehaviour
             Instantiate(passValuePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
         }
 
-        if (!PassValue.instance.isBossScene()) UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
+        if (!PassValue.instance.isBossScene) UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
         
 
         loadMapFromText();
@@ -52,7 +52,7 @@ public class MapGenerator : MonoBehaviour
         {
             path = Application.streamingAssetsPath + "/Maps/Tutorial/0-" + PassValue.instance.stageIndex + ".txt";
         }
-        else if (PassValue.instance.isBossScene())
+        else if (PassValue.instance.isBossScene)
         {
             Debug.Log("----------------- BOSS --------------------");
             path = Application.streamingAssetsPath + "/Maps/Boss/Boss.txt";

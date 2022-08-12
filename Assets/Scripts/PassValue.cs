@@ -15,6 +15,9 @@ public class PassValue : MonoBehaviour
     public int popUpIndex;
     public int stageIndex;
 
+    // for boss scene
+    public bool isBossScene;
+
     private void Awake()
     {
         if (instance == null)
@@ -23,6 +26,7 @@ public class PassValue : MonoBehaviour
             DontDestroyOnLoad(gameObject);
 
             // initialize value for tutorials
+            isBossScene = false;
             isTutorial = false;
             popUpIndex = 0;
             stageIndex = 0;
@@ -32,10 +36,5 @@ public class PassValue : MonoBehaviour
             Destroy(gameObject);
         }
 
-    }
-
-    public bool isBossScene()
-    {
-        return UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex == 3;
     }
 }

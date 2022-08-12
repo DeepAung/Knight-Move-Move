@@ -16,9 +16,15 @@ public class SceneLoader : MonoBehaviour
 
     public void loadScene(int index)
     {
-        if (PassValue.instance.isTutorial && 
-            SceneManager.GetActiveScene().buildIndex == 2 && 
-            index != 1)
+
+        if (index == 3)
+            PassValue.instance.isBossScene = true;
+        else
+            PassValue.instance.isBossScene = false;
+
+        if (index == 2 && PassValue.instance.mapNumber == 0)
+            PassValue.instance.isTutorial = true;
+        else
         {
             PassValue.instance.isTutorial = false;
             PassValue.instance.stageIndex = 0;

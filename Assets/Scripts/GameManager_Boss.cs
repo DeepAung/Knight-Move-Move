@@ -205,4 +205,17 @@ public class GameManager_Boss : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         isMoving = false;
     }
+
+    public void fromBossAttackSpike(bool rowOrCol, int index)
+    {
+        Debug.Log("2: " + myPlayer.position[0] + " " + myPlayer.position[1]);
+        if (rowOrCol)
+        {
+            if (myPlayer.position[0] == index) myPlayer.health--;
+        }
+        else
+        {
+            if (myPlayer.position[1] == index) myPlayer.health--;
+        }
+    }
 }

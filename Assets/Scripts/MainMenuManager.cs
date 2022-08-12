@@ -25,6 +25,11 @@ public class MainMenuManager : MonoBehaviour
         Application.Quit();
     }
 
+    public static void goToGithub()
+    {
+        Application.OpenURL("https://github.com/DeepAung/Knight-Move-Move");
+    }
+
     public static void goToScene()
     {
         int buttonName = int.Parse(
@@ -36,7 +41,6 @@ public class MainMenuManager : MonoBehaviour
         if (buttonName == 0)
         {
             PassValue.instance.dialogueName = "Intro";
-            PassValue.instance.isTutorial = true;
             SceneLoader.instance.loadScene(1); // Dialogue
         }
         else if (buttonName == int.MaxValue)

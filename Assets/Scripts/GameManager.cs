@@ -188,25 +188,21 @@ public class GameManager : MonoBehaviour
 
         if (newGroundLayer == 'E')
         {
-            if (PassValue.instance.mapNumber == PassValue.instance.mapList[PassValue.instance.mapList.Count - 2])
+            //if (PassValue.instance.mapNumber == PassValue.instance.mapList[PassValue.instance.mapList.Count - 2])
+            //{
+            //    SceneLoader.instance.loadScene(3); // Boss
+            //}
+            if (PassValue.instance.mapNumber == PassValue.instance.mapList[PassValue.instance.mapList.Count - 1])
             {
-                SceneLoader.instance.loadScene(3); // Boss
+                PassValue.instance.dialogueName = "Outro";
+                SceneLoader.instance.loadScene(1);
             }
             else
             {
-                if (PassValue.instance.isTutorial)
-                {
-                    PassValue.instance.mapNumber = PassValue.instance.mapList[1];
-                    PassValue.instance.isTutorial = false;
-                    PassValue.instance.stageIndex = 0;
-                    PassValue.instance.popUpIndex = 0;
-                }
-                else
-                {
-                    PassValue.instance.mapNumber = PassValue.instance.mapList[
-                        PassValue.instance.mapList.IndexOf(PassValue.instance.mapNumber) + 1
-                    ];
-                }
+                PassValue.instance.mapNumber = PassValue.instance.mapList[
+                    PassValue.instance.mapList.IndexOf(PassValue.instance.mapNumber) + 1
+                ];
+
                 SceneLoader.instance.loadScene(2); // GamePlay
             }
 

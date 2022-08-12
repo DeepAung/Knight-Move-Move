@@ -38,14 +38,17 @@ public class MenuController : MonoBehaviour
         for (int i = 0; i < buttons.Count; i++)
         {
             var colors = buttons[i].colors;
+            var script = buttons[i].GetComponent<ButtonScript>();
 
             if (i == selection)
             {
-                colors.normalColor = new Color(0.78f, 0.78f, 0.78f);
+                colors.normalColor = new Color(0.9f, 0.9f, 0.9f);
+                script.setToNew();
             }
             else
             {
                 colors.normalColor = new Color(1f, 1f, 1f);
+                script.setToOld();
             }
 
             buttons[i].colors = colors;
@@ -54,13 +57,15 @@ public class MenuController : MonoBehaviour
 
     void checkInputButton()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) || 
+            Input.GetKeyDown(KeyCode.RightArrow))
         {
             selection++;
             if (selection == buttons.Count) selection = 0;
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || 
+            Input.GetKeyDown(KeyCode.LeftArrow))
         {
             selection--;
             if (selection == -1) selection = buttons.Count - 1;

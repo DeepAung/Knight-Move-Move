@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!PassValue.instance.isBossScene()) moveCount.text = myPlayer.moveCount.ToString();
+        if (!PassValue.instance.isBossScene) moveCount.text = myPlayer.moveCount.ToString();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

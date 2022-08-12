@@ -57,6 +57,9 @@ public class MapGenerator_Boss : MonoBehaviour
         offset.x = -m / 2;
         offset.y = n / 2 - 1;
 
+        // for boss map
+        offset.y -= 2;
+
     }
 
     void renderMap()
@@ -210,7 +213,7 @@ public class MapGenerator_Boss : MonoBehaviour
 
     public Vector3 getPos(int i, int j, float h = 0f, float k = 0f)
     {
-        return new Vector3(offset.x + j, offset.y - i, 0f);
+        return new Vector3(offset.x + 1 + j + h, offset.y - i + k, 0);
     }
     public void generateTile(int i, int j, Tile tile)
     {
