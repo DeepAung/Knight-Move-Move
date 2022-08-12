@@ -1,14 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 using System.IO;
 
 public class DialogueManager : MonoBehaviour
 {
-    public TMP_Text dialogueText, helpText;
+    public TMP_Text showText, helpText;
+    public Image showImage;
+    //public Image[] introImages, outroImages;
+
     string[] textFile;
+    List<Sprite> imageSpriteList;
+
     bool readyToLoadScene = false;
+    int index = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -16,65 +23,34 @@ public class DialogueManager : MonoBehaviour
         string path = Application.streamingAssetsPath + "/Dialogues/" + PassValue.instance.dialogueName + ".txt";
         textFile = File.ReadAllLines(path);
 
-        dialogueText.text = "";
-        StartCoroutine( showText() );
+        showText.text = "";
+
+        imageSpriteList = new List<Sprite>(
+            Resources.LoadAll<Sprite>("Image/" + PassValue.instance.dialogueName)
+        );
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (index == imageSpriteList.Count) return;
+
+
+        showText.text = textFile[index];
+        showImage.sprite = imageSpriteList[index];
+
+
         if (Input.anyKeyDown)
         {
-            if (readyToLoadScene)
+            index++;
+
+            if (index == imageSpriteList.Count)
             {
                 if (PassValue.instance.dialogueName == "Intro")
-                {
-                    SceneLoader.instance.loadScene(2); // GamePlay
-                }
+                    SceneLoader.instance.loadScene(2);
                 else if (PassValue.instance.dialogueName == "Outro")
-                {
-                    SceneLoader.instance.loadScene(0); // MainMenu
-                }
-            }
-            else
-            {
-                skipDialogue();
+                    SceneLoader.instance.loadScene(0);
             }
         }
-    }
-
-    IEnumerator showText()
-    {
-        for (int i = 0; i < textFile.Length; i++)
-        {
-            for (int j = 0; j < textFile[i].Length; j++)
-            {
-                dialogueText.text += textFile[i][j];
-                yield return new WaitForSecondsRealtime(0.05f);
-            }
-            dialogueText.text += "\n";
-            yield return new WaitForSecondsRealtime(0.2f);
-        }
-
-        readyToLoadScene = true;
-        helpText.text = "Press anykey to continue.";
-    }
-
-    void skipDialogue()
-    {
-        StopAllCoroutines();
-
-        dialogueText.text = "";
-        for (int i = 0; i < textFile.Length; i++)
-        {
-            for (int j = 0; j < textFile[i].Length; j++)
-            {
-                dialogueText.text += textFile[i][j];
-            }
-            dialogueText.text += "\n";
-        }
-
-        readyToLoadScene = true;
-        helpText.text = "Press anykey to continue.";
     }
 }

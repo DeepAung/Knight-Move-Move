@@ -33,14 +33,12 @@ public class ButtonScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     public void OnPointerDown(PointerEventData pointerEventData)
     {
         pressing = true;
-        Debug.Log("pointer down");
         setToNew();
     }
 
     public void OnPointerUp(PointerEventData pointerEventData)
     {
         pressing = false;
-        Debug.Log("pointer up");
         setToOld();
     }
 }
