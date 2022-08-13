@@ -260,17 +260,17 @@ PrefabInstance:
     - target: {fileID: 1756982559491351447, guid: f3c95c05bc741ef49a5b37e572db37c2,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.4340193
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1756982559491351447, guid: f3c95c05bc741ef49a5b37e572db37c2,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.094787546
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1756982559491351447, guid: f3c95c05bc741ef49a5b37e572db37c2,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 68.25603
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1756982559491351447, guid: f3c95c05bc741ef49a5b37e572db37c2,
         type: 3}
@@ -307,6 +307,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4841229221519048348, guid: f3c95c05bc741ef49a5b37e572db37c2,
+        type: 3}
+      propertyPath: sounds.Array.data[4].clip
+      value: 
+      objectReference: {fileID: 8300000, guid: cc0ad60233522e447be5624b488bb154, type: 3}
     - target: {fileID: 7005206610786889153, guid: f3c95c05bc741ef49a5b37e572db37c2,
         type: 3}
       propertyPath: m_Name
@@ -2556,6 +2561,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1536297769}
   - component: {fileID: 1536297770}
+  - component: {fileID: 1536297771}
   m_Layer: 5
   m_Name: Music Slider
   m_TagString: Untagged
@@ -2633,10 +2639,35 @@ MonoBehaviour:
   m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.0001
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1536297771}
+        m_TargetAssemblyTypeName: MixerController, Assembly-CSharp
+        m_MethodName: setVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1536297771
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1536297768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6f793c0f101c45408eccd776a263f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: e7ad33a577eed4f4489abb07e880f82d, type: 2}
 --- !u!1 &1548878089
 GameObject:
   m_ObjectHideFlags: 0
@@ -5806,6 +5837,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2089353642}
   - component: {fileID: 2089353643}
+  - component: {fileID: 2089353644}
   m_Layer: 5
   m_Name: Sound Slider
   m_TagString: Untagged
@@ -5883,7 +5915,32 @@ MonoBehaviour:
   m_MinValue: 0.0001
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 0.0001
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2089353644}
+        m_TargetAssemblyTypeName: MixerController, Assembly-CSharp
+        m_MethodName: setVolume
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &2089353644
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2089353641}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6f793c0f101c45408eccd776a263f2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioMixer: {fileID: 24100000, guid: 86122542b41f79c429ad1324f89a7678, type: 2}

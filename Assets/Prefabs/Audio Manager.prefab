@@ -44,12 +44,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33b84a385b56f7a40beed4c4d287f061, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  musicGroup: {fileID: 24300002, guid: e7ad33a577eed4f4489abb07e880f82d, type: 2}
+  soundGroup: {fileID: 24300002, guid: 86122542b41f79c429ad1324f89a7678, type: 2}
+  musicVolume: 0
+  soundVolume: 0
   sounds:
-  - name: SpikeHit
-    clip: {fileID: 8300000, guid: b2724a0bbaec9aa4eb915d585f9ecfe5, type: 3}
-    volume: 0.3
+  - name: BGMusic
+    clip: {fileID: 8300000, guid: 9b105297cec6d9b4bab7eb9f237e071c, type: 3}
+    volume: 0.2
     pitch: 1
-    loop: 0
+    loop: 1
     source: {fileID: 0}
   - name: ButtonClick
     clip: {fileID: 8300000, guid: dee64ab867424db4c961de2b6cb97f0d, type: 3}
@@ -63,11 +67,33 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
-  - name: BGMusic
-    clip: {fileID: 8300000, guid: 9b105297cec6d9b4bab7eb9f237e071c, type: 3}
-    volume: 0.2
+  - name: SpikeHit
+    clip: {fileID: 8300000, guid: b2724a0bbaec9aa4eb915d585f9ecfe5, type: 3}
+    volume: 0.3
     pitch: 1
-    loop: 1
+    loop: 0
     source: {fileID: 0}
-  musicSliderValue: 0.5
-  soundSliderValue: 0.5
+  - name: StoneMove
+    clip: {fileID: 8300000, guid: 9f3f729111412ea4f88fb32f2d44b0f4, type: 3}
+    volume: 0.6
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: WoodBroken
+    clip: {fileID: 8300000, guid: c5b7402215cd63542890ba8d2ff0141b, type: 3}
+    volume: 0.6
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Teleport
+    clip: {fileID: 8300000, guid: 2e8e0f542630bc8488bcd473d71d3641, type: 3}
+    volume: 0.6
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: GameOver
+    clip: {fileID: 8300000, guid: 39f918325ad9c704fa164860736d365c, type: 3}
+    volume: 0.6
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

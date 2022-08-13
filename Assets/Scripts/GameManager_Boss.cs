@@ -90,6 +90,8 @@ public class GameManager_Boss : MonoBehaviour
             var script = myMapObj[ni, nj].topLayer.GetComponent<BreakableStone>();
             script.Destroy();
 
+            AudioManager.instance.play("WoodBroken");
+
             playerCanMove = false;
         }
         else if (newTopLayer == 'M')
@@ -115,6 +117,7 @@ public class GameManager_Boss : MonoBehaviour
             myMapObj[ni, nj].topLayer = myMapObj[nni, nnj].topLayer;
             myMapObj[nni, nnj].topLayer = temp2;
 
+            AudioManager.instance.play("StoneMove");
 
             playerCanMove = false;
         }
@@ -169,6 +172,10 @@ public class GameManager_Boss : MonoBehaviour
         {
             PassValue.instance.dialogueName = "Outro";
             SceneLoader.instance.loadScene(1);
+
+            AudioManager.instance.play("Teleport");
+
+            myPlayer.animator.SetTrigger("Warp");
 
             myPlayer.pass = true;
             return;

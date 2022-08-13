@@ -130,6 +130,8 @@ public class Player : MonoBehaviour
     {
         animator.SetTrigger("Dead");
 
+        AudioManager.instance.play("GameOver");
+
         StartCoroutine( restartScene() );
     }
 

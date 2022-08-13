@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
+
+    public AudioMixerGroup musicGroup, soundGroup;
+    public float musicVolume, soundVolume;
 
     public Sound[] sounds;
 
@@ -15,6 +19,8 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
             DontDestroyOnLoad(gameObject);
+
+            musicVolume = soundVolume = 1f;
         }
         else
         {
@@ -30,27 +36,19 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.pitch = s.pitch;
             s.source.loop = s.loop;
+
+            if (s.name == "BGMusic") 
+                s.source.outputAudioMixerGroup = musicGroup;
+            else 
+                s.source.outputAudioMixerGroup = soundGroup;
         }
 
-        playBG();
+        play("BGMusic");
     }
 
     public void play(string name)
     {
         Sound s = System.Array.Find(sounds, s => s.name == name);
-
-        if (s == null)
-        {
-            Debug.Log("sound name not found: " + name);
-            return;
-        }
-
-        s.source.Play();
-    }
-
-    public void playBG()
-    {
-        Sound s = System.Array.Find(sounds, s => s.name == "BGMusic");
 
         if (s == null)
         {

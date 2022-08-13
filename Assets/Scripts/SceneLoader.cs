@@ -12,6 +12,21 @@ public class SceneLoader : MonoBehaviour
     private void Awake()
     {
         instance = this;
+
+        int currIndex = SceneManager.GetActiveScene().buildIndex;
+        if (currIndex == 3)
+            PassValue.instance.isBossScene = true;
+        else
+            PassValue.instance.isBossScene = false;
+
+        if (currIndex == 2 && PassValue.instance.mapNumber == 0)
+            PassValue.instance.isTutorial = true;
+        else
+        {
+            PassValue.instance.isTutorial = false;
+            PassValue.instance.stageIndex = 0;
+            PassValue.instance.popUpIndex = 0;
+        }
     }
 
     public void loadScene(int index)
@@ -38,16 +53,6 @@ public class SceneLoader : MonoBehaviour
     {
         loadScene(SceneManager.GetActiveScene().buildIndex);
     }
-    
-    //public void loadNextScene()
-    //{
-    //    loadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    //}
-
-    //public void loadPreviousScene()
-    //{
-    //    loadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    //}
 
     public IEnumerator awaitLoadScene(int index)
     {

@@ -60,16 +60,14 @@ public class MenuController : MonoBehaviour
 
     void checkInputButton()
     {
-        if (Input.GetKeyDown(KeyCode.DownArrow) || 
-            Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             selection++;
             if (selection == buttons.Count) selection = 0;
             AudioManager.instance.play("ButtonSelect");
         }
 
-        if (Input.GetKeyDown(KeyCode.UpArrow) || 
-            Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             selection--;
             if (selection == -1) selection = buttons.Count - 1;

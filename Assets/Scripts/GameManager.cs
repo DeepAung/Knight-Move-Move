@@ -29,6 +29,11 @@ public class GameManager : MonoBehaviour
     public int n, m;
     bool isMoving = false;
 
+    private void Start()
+    {
+        MapParent.loadMaps();
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -91,6 +96,8 @@ public class GameManager : MonoBehaviour
                     myBreakableStones[it].Destroy();
                     myPlayer.moveCount--;
 
+                    AudioManager.instance.play("WoodBroken");
+
                     playerCanMove = false;
                     break;
                 }
@@ -122,6 +129,8 @@ public class GameManager : MonoBehaviour
                     myPlayer.moveCount--;
 
                     StartCoroutine(myMovableStones[it].moveTo(dx, dy));
+
+                    AudioManager.instance.play("StoneMove");
 
                     playerCanMove = false;
                     break;
@@ -205,6 +214,10 @@ public class GameManager : MonoBehaviour
 
                 SceneLoader.instance.loadScene(2); // GamePlay
             }
+
+            AudioManager.instance.play("Teleport");
+
+            myPlayer.animator.SetTrigger("Warp");
 
             myPlayer.pass = true;
             return;
