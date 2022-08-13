@@ -7,7 +7,7 @@ public class MainMenuManager : MonoBehaviour
 {
     public GameObject MainMenu, MapSelectMenu, AboutMenu;
 
-    private void Start()
+    private void Awake()
     {
         MainMenu.SetActive(true);
         MapSelectMenu.SetActive(false);
@@ -28,6 +28,15 @@ public class MainMenuManager : MonoBehaviour
     public static void goToGithub()
     {
         Application.OpenURL("https://github.com/DeepAung/Knight-Move-Move");
+    }
+
+    public void goToIntro()
+    {
+        MapParent.loadMaps();
+
+        PassValue.instance.mapNumber = 0;
+        PassValue.instance.dialogueName = "Intro";
+        SceneLoader.instance.loadScene(1);
     }
 
     public static void goToScene()

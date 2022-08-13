@@ -32,11 +32,6 @@ public class MapGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        // for debugging
-        if (!PassValue.instance)
-        {
-            Instantiate(passValuePrefab, new Vector3(0f, 0f, 0f), Quaternion.identity);
-        }
 
         if (!PassValue.instance.isBossScene) UI.mapNumber.text = PassValue.instance.mapNumber.ToString();
         

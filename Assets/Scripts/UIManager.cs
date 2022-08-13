@@ -34,12 +34,14 @@ public class UIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             togglePauseMenu();
+            AudioManager.instance.play("ButtonSelect");
         }
         else if (Input.GetKeyDown(KeyCode.R))
         {
             Time.timeScale = 1;
             // restart scene
             SceneLoader.instance.restartScene();
+            AudioManager.instance.play("ButtonSelect");
         }
     }
 

@@ -8,10 +8,13 @@ public class MapParent : MonoBehaviour
     public GameObject arrowLeft, arrowRight;
 
     [SerializeField]
-    List<int> mapList;
-    int maxPage, remainder;
+    static List<int> mapList
+    {
+        get { return PassValue.instance.mapList; }
+        set { PassValue.instance.mapList = value; }
+    }
+
     int firstIndex = 0;
-    bool isLoad = false;
     MapButton[] buttons;
 
     // for toRoman function
@@ -23,20 +26,15 @@ public class MapParent : MonoBehaviour
     {
         buttons = new MapButton[10];
 
-        maxPage = (mapList.Count + 9) / 10; // always round up
-        remainder = mapList.Count % 10; // the left over
+        loadMaps();
+        renderMapButton();
+
+        Debug.Log("1");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!isLoad && gameObject.activeSelf)
-        {
-            loadMaps();
-            renderMapButton();
-            isLoad = true;
-        }
-
 
         if (firstIndex == 0) arrowLeft.SetActive(false);
         else arrowLeft.SetActive(true);
@@ -45,8 +43,10 @@ public class MapParent : MonoBehaviour
         else arrowRight.SetActive(true);
     }
 
-    void loadMaps()
+    public static void loadMaps()
     {
+        mapList = new List<int>();
+
         string path = Application.streamingAssetsPath + "/Maps/";
         var dirInfo = new System.IO.DirectoryInfo(path);
         var files = dirInfo.GetFiles("*.txt");
@@ -64,8 +64,6 @@ public class MapParent : MonoBehaviour
         //mapList.Add(int.MaxValue);
 
         mapList.Sort();
-
-        PassValue.instance.mapList = new List<int>(mapList);
     }
 
     void renderMapButton()

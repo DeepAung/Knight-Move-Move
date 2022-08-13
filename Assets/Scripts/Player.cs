@@ -115,6 +115,8 @@ public class Player : MonoBehaviour
             moveCount -= num;
             if (moveCount > 0) animator.SetTrigger("Hit");
         }
+
+        AudioManager.instance.play("SpikeHit");
     }
 
     public void enqueueMove(float x, float y)
@@ -134,7 +136,7 @@ public class Player : MonoBehaviour
     public IEnumerator restartScene()
     {
 
-        yield return new WaitForSecondsRealtime(1.5f);
+        yield return new WaitForSeconds(1.5f);
 
         SceneLoader.instance.restartScene();
     }

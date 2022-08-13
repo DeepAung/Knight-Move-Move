@@ -145,7 +145,7 @@ public class TutorialManager : MonoBehaviour
         for (int i = 0; i < str.Length; i++)
         {
             popUpText.text += str[i];
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 

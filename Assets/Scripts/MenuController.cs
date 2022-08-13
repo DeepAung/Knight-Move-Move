@@ -38,17 +38,20 @@ public class MenuController : MonoBehaviour
         for (int i = 0; i < buttons.Count; i++)
         {
             var colors = buttons[i].colors;
+            var transform = buttons[i].transform;
             var script = buttons[i].GetComponent<ButtonScript>();
 
             if (i == selection)
             {
-                colors.normalColor = new Color(0.9f, 0.9f, 0.9f);
-                script.setToNew();
+                colors.normalColor = new Color(1f, 1f, 1f);
+                transform.localScale = new Vector3(1.1f, 1.1f, 1.1f);
+                //script.setToNew();
             }
             else
             {
-                colors.normalColor = new Color(1f, 1f, 1f);
-                script.setToOld();
+                colors.normalColor = new Color(0.5f, 0.5f, 0.5f);
+                transform.localScale = new Vector3(1f, 1f, 1f);
+                //script.setToOld();
             }
 
             buttons[i].colors = colors;
@@ -62,6 +65,7 @@ public class MenuController : MonoBehaviour
         {
             selection++;
             if (selection == buttons.Count) selection = 0;
+            AudioManager.instance.play("ButtonSelect");
         }
 
         if (Input.GetKeyDown(KeyCode.UpArrow) || 
@@ -69,6 +73,7 @@ public class MenuController : MonoBehaviour
         {
             selection--;
             if (selection == -1) selection = buttons.Count - 1;
+            AudioManager.instance.play("ButtonSelect");
         }
 
         if (buttons.Count == 0) return;
@@ -77,6 +82,7 @@ public class MenuController : MonoBehaviour
             Input.GetKeyDown(KeyCode.Space))
         {
             buttons[selection].onClick.Invoke();
+            AudioManager.instance.play("ButtonClick");
         }
     }
 
@@ -87,6 +93,7 @@ public class MenuController : MonoBehaviour
             if (Input.GetKeyDown(buttonPair.keyCode))
             {
                 buttonPair.button.onClick.Invoke();
+                AudioManager.instance.play("ButtonClick");
             }
         }
 

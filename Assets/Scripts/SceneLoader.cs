@@ -53,7 +53,7 @@ public class SceneLoader : MonoBehaviour
     {
         animator.SetTrigger("Start");
 
-        yield return new WaitForSecondsRealtime(1);
+        yield return new WaitForSeconds(1f);
 
         SceneManager.LoadScene(index);
     }

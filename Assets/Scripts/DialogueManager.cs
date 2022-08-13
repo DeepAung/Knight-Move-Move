@@ -9,17 +9,20 @@ public class DialogueManager : MonoBehaviour
 {
     public TMP_Text showText, helpText;
     public Image showImage;
-    //public Image[] introImages, outroImages;
+
+    Animator showTextAnim, showImageAnim;
 
     string[] textFile;
     List<Sprite> imageSpriteList;
 
-    bool readyToLoadScene = false;
     int index = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        showTextAnim = showText.GetComponent<Animator>();
+        showImageAnim = showImage.GetComponent<Animator>();
+
         string path = Application.streamingAssetsPath + "/Dialogues/" + PassValue.instance.dialogueName + ".txt";
         textFile = File.ReadAllLines(path);
 
@@ -43,6 +46,7 @@ public class DialogueManager : MonoBehaviour
         if (Input.anyKeyDown)
         {
             index++;
+            AudioManager.instance.play("ButtonClick");
 
             if (index == imageSpriteList.Count)
             {
@@ -50,6 +54,11 @@ public class DialogueManager : MonoBehaviour
                     SceneLoader.instance.loadScene(2);
                 else if (PassValue.instance.dialogueName == "Outro")
                     SceneLoader.instance.loadScene(0);
+            }
+            else
+            {
+                showTextAnim.SetTrigger("Start");
+                showImageAnim.SetTrigger("Start");
             }
         }
     }

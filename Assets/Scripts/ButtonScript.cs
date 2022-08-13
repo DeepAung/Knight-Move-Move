@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class ButtonScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IPointerClickHandler
 {
     Button button;
     public Sprite oldImage, newImage;
@@ -40,5 +40,10 @@ public class ButtonScript : MonoBehaviour, IPointerDownHandler, IPointerUpHandle
     {
         pressing = false;
         setToOld();
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        AudioManager.instance.play("ButtonClick");
     }
 }
