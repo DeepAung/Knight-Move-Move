@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     // --------------------------------------------------------------- //
 
     Vector2 movement;
-    int frameCnt = 5;
+    int frameCnt = 6;
     Queue<Vector3> myQueue;
 
     // Start is called before the first frame update
@@ -40,7 +40,7 @@ public class Player : MonoBehaviour
             healthBar.setMaxHealth(100);
         }
 
-        moveSpeed = 10f;
+        moveSpeed = 50f / 6f;
         myQueue = new Queue<Vector3>();
     }
 
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
         if (frameCnt <= 0)
         {
             myQueue.Dequeue();
-            frameCnt = 5;
+            frameCnt = 6;
         }
 
         if (PassValue.instance.isBossScene)

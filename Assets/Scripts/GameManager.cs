@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         MapParent.loadMaps();
+
+        Debug.Log(Application.persistentDataPath);
     }
 
     // Update is called once per frame
@@ -71,6 +73,8 @@ public class GameManager : MonoBehaviour
               j = myPlayer.position[1],
              ni = i - (int)dy,
              nj = j + (int)dx;
+
+        AudioManager.instance.play("Walk");
 
         if (ni < 0 || ni >= n || nj < 0 || nj >= m) return;
 
@@ -258,7 +262,7 @@ public class GameManager : MonoBehaviour
     IEnumerator waitForNextMoving()
     {
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.2f);
         isMoving = false;
     }
 }

@@ -99,7 +99,7 @@ public class MapGenerator : MonoBehaviour
                 // render top layer
                 if (topLayer == 'S') // player
                 {
-                    gameManager.myMap[i, j].topLayer = '.';
+                    gameManager.myMap[i, j].topLayer = ' ';
 
                     var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
                         .GetComponent<Player>();

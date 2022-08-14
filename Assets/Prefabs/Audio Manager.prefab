@@ -74,14 +74,14 @@ MonoBehaviour:
     loop: 0
     source: {fileID: 0}
   - name: StoneMove
-    clip: {fileID: 8300000, guid: 9f3f729111412ea4f88fb32f2d44b0f4, type: 3}
-    volume: 0.6
+    clip: {fileID: 8300000, guid: cc0ad60233522e447be5624b488bb154, type: 3}
+    volume: 1
     pitch: 1
     loop: 0
     source: {fileID: 0}
   - name: WoodBroken
     clip: {fileID: 8300000, guid: c5b7402215cd63542890ba8d2ff0141b, type: 3}
-    volume: 0.6
+    volume: 1
     pitch: 1
     loop: 0
     source: {fileID: 0}
@@ -93,6 +93,12 @@ MonoBehaviour:
     source: {fileID: 0}
   - name: GameOver
     clip: {fileID: 8300000, guid: 39f918325ad9c704fa164860736d365c, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Walk
+    clip: {fileID: 8300000, guid: be4f7028605dec649b256da16adf8204, type: 3}
     volume: 0.6
     pitch: 1
     loop: 0

@@ -87,7 +87,7 @@ public class MapGenerator_Boss : MonoBehaviour
                 // render top layer
                 if (topLayer == 'S') // player
                 {
-                    gameManager.myMap[i, j].topLayer = '.';
+                    gameManager.myMap[i, j].topLayer = ' ';
 
                     var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
                         .GetComponent<Player>();
@@ -137,7 +137,9 @@ public class MapGenerator_Boss : MonoBehaviour
                 else if (groundLayer == 'E') // goal  
                 {
                     generateTile(i, j, tiles[1].tile);
-                    generatePrefabs(i, j, -0.5f, 0.5f, prefabs[5]);
+                    var gameObj = generatePrefabs(i, j, -0.5f, 0.5f, prefabs[5]);
+
+                    gameManager.myMapObj[i, j].groundLayer = gameObj;
                 }
                 else if ('1' <= groundLayer && groundLayer <= '9') // potions
                 {

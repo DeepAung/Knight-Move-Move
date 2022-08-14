@@ -26,9 +26,11 @@ public class Boss_Idle : StateMachineBehaviour
         else
         {
             time -= Time.deltaTime;
-            //Debug.Log("time: " + time);
+
             if (time <= 0)
             {
+
+                //animator.SetTrigger("Attack_MovableStone");
                 if (attackType == 0)
                 {
                     animator.SetTrigger("Attack_MovableStone");

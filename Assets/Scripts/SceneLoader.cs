@@ -9,7 +9,7 @@ public class SceneLoader : MonoBehaviour
     public static SceneLoader instance;
     public Animator animator;
 
-    private void Awake()
+    private void Start()
     {
         instance = this;
 
@@ -29,7 +29,7 @@ public class SceneLoader : MonoBehaviour
         }
     }
 
-    public void loadScene(int index)
+    public void loadScene(int index, float deley = 0f)
     {
 
         if (index == 3)
@@ -46,7 +46,7 @@ public class SceneLoader : MonoBehaviour
             PassValue.instance.popUpIndex = 0;
         }
 
-        StartCoroutine( awaitLoadScene(index) );
+        StartCoroutine( awaitLoadScene(index, deley) );
     }
 
     public void restartScene()
@@ -54,8 +54,10 @@ public class SceneLoader : MonoBehaviour
         loadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    public IEnumerator awaitLoadScene(int index)
+    public IEnumerator awaitLoadScene(int index, float delay = 0f)
     {
+        yield return new WaitForSeconds(delay);
+
         animator.SetTrigger("Start");
 
         yield return new WaitForSeconds(1f);

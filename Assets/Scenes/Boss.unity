@@ -1765,6 +1765,7 @@ MonoBehaviour:
   mapGenerator: {fileID: 1088177852}
   myPlayer: {fileID: 0}
   mySwappableSpikes: []
+  boss: {fileID: 8826010866800677762}
   n: 0
   m: 0
 --- !u!1 &953246369

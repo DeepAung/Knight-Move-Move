@@ -27,10 +27,21 @@ public class GameManager_Boss : MonoBehaviour
     public layer[,] myMap;
     public layerObj[,] myMapObj;
 
+    public Boss boss;
+
     Vector2 movement = new Vector2(0f, 0f);
 
     public int n, m;
     bool isMoving = false;
+
+    private void Start()
+    {
+        int i = Random.Range(0, n);
+        int j = Random.Range(0, m);
+        GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[5]);
+        myMap[i, j].groundLayer = 'E';
+        myMapObj[i, j].groundLayer = obj;
+    }
 
     // Update is called once per frame
     void Update()
@@ -70,6 +81,8 @@ public class GameManager_Boss : MonoBehaviour
              ni = i - (int)dy,
              nj = j + (int)dx;
 
+        AudioManager.instance.play("Walk");
+
         if (ni < 0 || ni >= n || nj < 0 || nj >= m) return;
 
         char topLayer = myMap[i, j].topLayer,
@@ -96,6 +109,7 @@ public class GameManager_Boss : MonoBehaviour
         }
         else if (newTopLayer == 'M')
         {
+
             int nni = ni - (int)dy, nnj = nj + (int)dx;
             if (nni < 0 || nni >= n || nnj < 0 || nnj >= m ||
                 myMap[nni, nnj].topLayer != ' ' ||
@@ -104,18 +118,45 @@ public class GameManager_Boss : MonoBehaviour
                 return;
             }
 
-            // swap char
-            char temp = myMap[ni, nj].topLayer;
-            myMap[ni, nj].topLayer = myMap[nni, nnj].topLayer;
-            myMap[nni, nnj].topLayer = temp;
-
             var script = myMapObj[ni, nj].topLayer.GetComponent<MovableStone>();
-            StartCoroutine(script.moveTo(dx, dy));
 
-            // swap gameObject
-            GameObject temp2 = myMapObj[ni, nj].topLayer;
-            myMapObj[ni, nj].topLayer = myMapObj[nni, nnj].topLayer;
-            myMapObj[nni, nnj].topLayer = temp2;
+            if (myMap[nni, nnj].groundLayer == 'E')
+            {
+                Debug.Log("teleport found");
+
+                script.Destroy();
+                myMap[ni, nj].topLayer = ' ';
+                myMapObj[ni, nj].topLayer = null;
+
+                boss.health--;
+                if (boss.health == 0)
+                {
+                    boss.animator.SetTrigger("Dead");
+                    PassValue.instance.dialogueName = "Outro";
+                    SceneLoader.instance.loadScene(1, 3f);
+                }
+                else
+                {
+                    boss.animator.SetTrigger("Hit");
+                }
+
+                Debug.Log("gen new teleport");
+                genNewTeleport(nni, nnj);
+            }
+            else
+            {
+                // swap char
+                char temp = myMap[ni, nj].topLayer;
+                myMap[ni, nj].topLayer = myMap[nni, nnj].topLayer;
+                myMap[nni, nnj].topLayer = temp;
+
+                StartCoroutine(script.moveTo(dx, dy));
+
+                // swap gameObject
+                GameObject temp2 = myMapObj[ni, nj].topLayer;
+                myMapObj[ni, nj].topLayer = myMapObj[nni, nnj].topLayer;
+                myMapObj[nni, nnj].topLayer = temp2;
+            }
 
             AudioManager.instance.play("StoneMove");
 
@@ -126,7 +167,6 @@ public class GameManager_Boss : MonoBehaviour
 
         if (!playerCanMove)
         {
-            Debug.Log("player can't move");
 
             if (groundLayer == '|')
             {
@@ -168,7 +208,7 @@ public class GameManager_Boss : MonoBehaviour
             mapGenerator.generatePrefabs(i, j, -0.5f, 0.05f, mapGenerator.prefabs[2]);
         }
 
-        if (newGroundLayer == 'E')
+        /*if (newGroundLayer == 'E')
         {
             PassValue.instance.dialogueName = "Outro";
             SceneLoader.instance.loadScene(1);
@@ -180,7 +220,7 @@ public class GameManager_Boss : MonoBehaviour
             myPlayer.pass = true;
             return;
         }
-        else if (newGroundLayer == '|')
+        else */if (newGroundLayer == '|')
         {
             myPlayer.getDamage();
         }
@@ -209,20 +249,34 @@ public class GameManager_Boss : MonoBehaviour
     IEnumerator waitForNextMoving()
     {
 
-        yield return new WaitForSeconds(0.25f);
+        yield return new WaitForSeconds(0.2f);
         isMoving = false;
     }
 
-    public void fromBossAttackSpike(bool rowOrCol, int index)
+    public void canSpikeDealDamage(int i, int j)
     {
-        Debug.Log("2: " + myPlayer.position[0] + " " + myPlayer.position[1]);
-        if (rowOrCol)
+        if (myPlayer.position[0] == i && myPlayer.position[1] == j)
         {
-            if (myPlayer.position[0] == index) myPlayer.health--;
+            myPlayer.getDamage();
         }
-        else
+    }
+
+    public void genNewTeleport(int pi, int pj)
+    {
+        Destroy(myMapObj[pi, pj].groundLayer);
+        myMap[pi, pj].groundLayer = '.';
+        myMapObj[pi, pj].groundLayer = null;
+
+        int i, j;
+        do
         {
-            if (myPlayer.position[1] == index) myPlayer.health--;
-        }
+            i = Random.Range(0, n);
+            j = Random.Range(0, m);
+        } while (myMap[i, j].topLayer != ' ');
+
+        Debug.Log("gen new teleport: out of loop");
+        GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[5]);
+        myMap[i, j].groundLayer = 'E';
+        myMapObj[i, j].groundLayer = obj;
     }
 }
