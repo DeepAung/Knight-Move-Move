@@ -5,9 +5,7 @@ using UnityEngine;
 public class Boss_Idle : StateMachineBehaviour
 {
     Boss boss;
-    bool waiting = false;
-    float time;
-    int attackType = 0;
+    float movableStoneTime, spikeTime;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
@@ -18,31 +16,26 @@ public class Boss_Idle : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (!waiting)
+        movableStoneTime -= Time.deltaTime;
+        spikeTime -= Time.deltaTime;
+
+        if (movableStoneTime <= 0)
         {
-            time = 2f;
-            waiting = true;
+
+            animator.SetTrigger("Attack_MovableStone");
+
+            movableStoneTime = 2f;
         }
-        else
+
+        //if (boss.stage == 0) return;
+
+        if (spikeTime <= 0)
         {
-            time -= Time.deltaTime;
+            animator.SetTrigger("Attack_Spike");
 
-            if (time <= 0)
-            {
-
-                //animator.SetTrigger("Attack_MovableStone");
-                if (attackType == 0)
-                {
-                    animator.SetTrigger("Attack_MovableStone");
-                }
-                else
-                {
-                    animator.SetTrigger("Attack_Spike");
-                }
-                attackType = 1 - attackType;
-
-                waiting = false;
-            }
+            if (boss.stage == 0) spikeTime = 2.5f;
+            else if (boss.stage == 1) spikeTime = 1.5f;
+            else if (boss.stage == 2) spikeTime = 1f;
         }
     }
 

@@ -122,7 +122,6 @@ public class GameManager_Boss : MonoBehaviour
 
             if (myMap[nni, nnj].groundLayer == 'E')
             {
-                Debug.Log("teleport found");
 
                 script.Destroy();
                 myMap[ni, nj].topLayer = ' ';
@@ -140,7 +139,7 @@ public class GameManager_Boss : MonoBehaviour
                     boss.animator.SetTrigger("Hit");
                 }
 
-                Debug.Log("gen new teleport");
+                Debug.LogWarning("gen new teleport");
                 genNewTeleport(nni, nnj);
             }
             else
@@ -272,9 +271,10 @@ public class GameManager_Boss : MonoBehaviour
         {
             i = Random.Range(0, n);
             j = Random.Range(0, m);
-        } while (myMap[i, j].topLayer != ' ');
+        } while (myMap[i, j].topLayer != ' ' || 
+                 myMap[i, j].groundLayer != '.');
 
-        Debug.Log("gen new teleport: out of loop");
+        Debug.LogWarning("gen new teleport: out of loop");
         GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[5]);
         myMap[i, j].groundLayer = 'E';
         myMapObj[i, j].groundLayer = obj;

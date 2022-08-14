@@ -14,12 +14,31 @@ public class Boss_Attack_Spike : StateMachineBehaviour
     {
         boss = animator.GetComponent<Boss>();
         gameManager = boss.gameManager;
-        
+       
+
+        bool rowOrCol;
+        int index, amount = 1;
+
+        if (boss.stage == 0) amount = 1;
+        else if (boss.stage == 1) amount = 2;
+        else if (boss.stage == 2) amount = 3;
+
+        for (int it = 0; it < amount; it++)
+        {
+            var result = getRandomPos();
+            rowOrCol = result.Key;
+            index = result.Value;
+
+            if (index == -1) continue;
+
+            boss.attackSpikeRowOrCol(rowOrCol, index);
+        }
+    }
+
+    public KeyValuePair<bool, int> getRandomPos()
+    {
         bool rowOrCol = Random.Range(0, 2) == 1;
-        int index;
-
-        int maxRange;
-
+        int index, maxRange;
 
         if (rowOrCol) maxRange = gameManager.n;
         else maxRange = gameManager.m;
@@ -50,24 +69,24 @@ public class Boss_Attack_Spike : StateMachineBehaviour
                     }
             }
 
-            if (++cnt >= LIMIT) return;
+            if (++cnt >= LIMIT) return new KeyValuePair<bool, int>(false, -1);
 
         } while (!check);
 
-        boss.attackSpikeRowOrCol(rowOrCol, index);
+        return new KeyValuePair<bool, int>(rowOrCol, index);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
+    //override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
 
-    }
+    //}
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
+    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    //{
 
-    }
+    //}
 
     // OnStateMove is called right after Animator.OnAnimatorMove()
     //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)

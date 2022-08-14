@@ -13,8 +13,7 @@ public class Player : MonoBehaviour
     public float moveSpeed;
     public Animator animator;
 
-    // for Boss
-    private int _health;
+    public HealthBar healthBar;
     public int health {
         get {
             return healthBar.getHealth();
@@ -23,7 +22,6 @@ public class Player : MonoBehaviour
             healthBar.setHealth(value);
         }
     }
-    public HealthBar healthBar;
 
     // --------------------------------------------------------------- //
 
@@ -37,7 +35,8 @@ public class Player : MonoBehaviour
         if (PassValue.instance.isBossScene)
         {
             healthBar = GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<HealthBar>();
-            healthBar.setMaxHealth(100);
+            healthBar.setMaxHealth(3);
+            moveCount = int.MaxValue;
         }
 
         moveSpeed = 50f / 6f;

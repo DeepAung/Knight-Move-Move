@@ -10,6 +10,8 @@ public class Boss : MonoBehaviour
 
     public Animator animator;
 
+    public int stage;
+
     const int LIMIT = 1000;
     public int health {
         get { return healthBar.getHealth(); }
@@ -24,14 +26,20 @@ public class Boss : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        healthBar.setMaxHealth(10);
+        healthBar.setMaxHealth(15);
+
+        stage = 0;
     }
 
     private void Update()
     {
-        if (health == 0)
+        if (health == 12)
         {
-            // boss died and then load dialogue scene
+            stage = 1;
+        }
+        else if (health == 6)
+        {
+            stage = 2;
         }
     }
 
@@ -60,14 +68,15 @@ public class Boss : MonoBehaviour
         GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[7]);
         obj.GetComponent<Animator>().SetTrigger("Warning");
 
+        gameManager.myMap[i, j].groundLayer = '!'; // pending
+
         yield return new WaitForSeconds(1f);
 
         gameManager.myMap[i, j].groundLayer = '|';
         gameManager.myMapObj[i, j].groundLayer = obj;
 
+        // check if new spike can deal damage to player
         gameManager.canSpikeDealDamage(i, j);
-
-        yield return new WaitForSeconds(3f);
 
         obj.GetComponent<Animator>().SetTrigger("Destroy");
 
@@ -79,23 +88,6 @@ public class Boss : MonoBehaviour
         gameManager.myMap[i, j].groundLayer = '.';
         gameManager.myMapObj[i, j].groundLayer = null;
     }
-
-    //IEnumerator objFallDown(GameObject obj, int i, int j, float time)
-    //{
-    //    Vector2 target = mapGenerator.getPos(i, j, -0.5f, 0.05f);
-    //    float speed = Vector2.Distance(obj.transform.position, target) / time;
-
-    //    while (obj.transform.position.y > target.y)
-    //    {
-    //        obj.transform.position -= new Vector3(0f, speed * Time.fixedDeltaTime, 0f);
-    //        yield return new WaitForFixedUpdate();
-    //    }
-
-    //    //obj.transform.position = target;
-    //    //yield return new WaitForFixedUpdate();
-
-    //    gameManager.myMap[i, j].topLayer = 'M';
-    //}
 
     public void attackSpikeRowOrCol(bool rowOrCol, int index)
     {

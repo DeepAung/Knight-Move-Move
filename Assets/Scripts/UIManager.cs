@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     public GameObject PauseMenu, ShowStats;
     public Player myPlayer;
 
+    bool isBossSceneStore;
+
     bool toggle = false;
 
     private void Awake()
@@ -24,12 +26,14 @@ public class UIManager : MonoBehaviour
     {
         ShowStats.SetActive(!toggle);
         PauseMenu.SetActive(toggle);
+
+        isBossSceneStore = PassValue.instance.isBossScene;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!PassValue.instance.isBossScene) moveCount.text = myPlayer.moveCount.ToString();
+        if (!isBossSceneStore) moveCount.text = myPlayer.moveCount.ToString();
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {
