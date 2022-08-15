@@ -28,8 +28,6 @@ public class MapParent : MonoBehaviour
 
         loadMaps();
         renderMapButton();
-
-        Debug.Log("1");
     }
 
     // Update is called once per frame
@@ -39,7 +37,7 @@ public class MapParent : MonoBehaviour
         if (firstIndex == 0) arrowLeft.SetActive(false);
         else arrowLeft.SetActive(true);
 
-        if (firstIndex + 10 > mapList.Count) arrowRight.SetActive(false);
+        if (firstIndex + 10 >= mapList.Count) arrowRight.SetActive(false);
         else arrowRight.SetActive(true);
     }
 

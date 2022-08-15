@@ -1953,7 +1953,7 @@ GameObject:
   - component: {fileID: 1088177852}
   m_Layer: 0
   m_Name: MapGenerator_Boss
-  m_TagString: Untagged
+  m_TagString: MapGenerator_Boss
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2012,6 +2012,7 @@ MonoBehaviour:
   - {fileID: 1608359985688467462, guid: 9ee77ef9364c33d4488a3567daee93a5, type: 3}
   - {fileID: 8589228334442026278, guid: 36a49ccafed82a44d8eb0ffe006f9954, type: 3}
   - {fileID: 598518528223154304, guid: 20fc95e46b6295a43a0c70afcf9eaec1, type: 3}
+  - {fileID: 280005039313857541, guid: c325b0acca1f7764399a8052cfc57513, type: 3}
   gameManager: {fileID: 934070642}
   UI: {fileID: 1269298817}
 --- !u!1 &1090832789
@@ -6354,26 +6355,32 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8826010866800677762, guid: c0cb8923673618c4eb444fc4e785c91f,
+        type: 3}
+      propertyPath: healthBar
+      value: 
+      objectReference: {fileID: 1796343025}
+    - target: {fileID: 8826010866800677762, guid: c0cb8923673618c4eb444fc4e785c91f,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 934070642}
+    - target: {fileID: 8826010866800677762, guid: c0cb8923673618c4eb444fc4e785c91f,
+        type: 3}
+      propertyPath: mapGenerator
+      value: 
+      objectReference: {fileID: 1088177852}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0cb8923673618c4eb444fc4e785c91f, type: 3}
---- !u!1 &3506267083261335241 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4384015794456451509, guid: c0cb8923673618c4eb444fc4e785c91f,
+--- !u!114 &8826010866800677762 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8826010866800677762, guid: c0cb8923673618c4eb444fc4e785c91f,
     type: 3}
   m_PrefabInstance: {fileID: 900689649832857468}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8826010866800677762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3506267083261335241}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b16c6f31187751544ab6fdce37802bf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthBar: {fileID: 1796343025}
-  gameManager: {fileID: 934070642}
-  mapGenerator: {fileID: 1088177852}

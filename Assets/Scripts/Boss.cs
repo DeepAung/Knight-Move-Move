@@ -10,7 +10,9 @@ public class Boss : MonoBehaviour
 
     public Animator animator;
 
+    // ----------------------------------- //
     public int stage;
+    float movableStoneTime, spikeTime;
 
     const int LIMIT = 1000;
     public int health {
@@ -41,52 +43,67 @@ public class Boss : MonoBehaviour
         {
             stage = 2;
         }
-    }
 
-    public IEnumerator attackMovableStone(int i, int j)
-    {
-        gameManager.myMap[i, j].topLayer = '!'; // pending
+        // ------------------------------------------------- //
 
-        GameObject obj = mapGenerator.generatePrefabs(i - 10, j, -0.5f, 0.05f, mapGenerator.prefabs[4]);
+        movableStoneTime -= Time.deltaTime;
+        spikeTime -= Time.deltaTime;
 
-        Vector2 target = mapGenerator.getPos(i, j, -0.5f, 0.05f);
-        float speed = Vector2.Distance(obj.transform.position, target);
-        while (obj.transform.position.y > target.y)
+        if (movableStoneTime <= 0 || spikeTime <= 0)
         {
-            obj.transform.position -= new Vector3(0f, speed * Time.fixedDeltaTime, 0f);
-            yield return new WaitForFixedUpdate();
+            animator.SetTrigger("Attack");
         }
 
-        obj.transform.position = new Vector3(target.x, target.y, 0);
+        if (movableStoneTime <= 0)
+        {
+            AttackMovableStoneHandler();
 
-        gameManager.myMap[i, j].topLayer = 'M';
-        gameManager.myMapObj[i, j].topLayer = obj;
+            movableStoneTime = 2f;
+        }
+
+        if (spikeTime <= 0)
+        {
+            AttackSpikeHandler();
+
+            if (stage == 0) spikeTime = 2.5f;
+            else if (stage == 1) spikeTime = 1.5f;
+            else if (stage == 2) spikeTime = 1f;
+        }
     }
 
-    public IEnumerator attackSpike(int i, int j)
+    void AttackMovableStoneHandler()
     {
-        GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[7]);
-        obj.GetComponent<Animator>().SetTrigger("Warning");
 
-        gameManager.myMap[i, j].groundLayer = '!'; // pending
+        int i, j, cnt = 0;
+        do
+        {
+            i = Random.Range(0, gameManager.n);
+            j = Random.Range(0, gameManager.m);
 
-        yield return new WaitForSeconds(1f);
+            if (++cnt >= LIMIT) return;
+        } while (gameManager.myMap[i, j].topLayer != ' ');
 
-        gameManager.myMap[i, j].groundLayer = '|';
-        gameManager.myMapObj[i, j].groundLayer = obj;
+        StartCoroutine(attackMovableStone(i, j));
+    }
 
-        // check if new spike can deal damage to player
-        gameManager.canSpikeDealDamage(i, j);
+    void AttackSpikeHandler()
+    {
 
-        obj.GetComponent<Animator>().SetTrigger("Destroy");
+        bool rowOrCol;
+        int index, amount = 1;
 
-        yield return new WaitForSeconds(0.5f);
+        if (stage == 0) amount = 1;
+        else if (stage == 1) amount = 2;
+        else if (stage == 2) amount = 3;
 
-        obj.GetComponent<NormalSpike>().Destroy();
-        mapGenerator.generateTile(i, j, mapGenerator.tiles[1].tile);
+        for (int it = 0; it < amount; it++)
+        {
+            rowOrCol = Random.Range(0, 2) == 1;
+            if (rowOrCol) index = Random.Range(0, gameManager.n);
+            else index = Random.Range(0, gameManager.m);
 
-        gameManager.myMap[i, j].groundLayer = '.';
-        gameManager.myMapObj[i, j].groundLayer = null;
+            attackSpikeRowOrCol(rowOrCol, index);
+        }
     }
 
     public void attackSpikeRowOrCol(bool rowOrCol, int index)
@@ -106,4 +123,58 @@ public class Boss : MonoBehaviour
             }
         }
     }
+
+    public IEnumerator attackMovableStone(int i, int j)
+    {
+        gameManager.myMap[i, j].topLayer = '!'; // pending
+
+        GameObject obj = mapGenerator.generatePrefabs(i - 10, j, -0.5f, 0.05f, mapGenerator.prefabs[4]);
+
+        var collider = obj.GetComponent<BoxCollider2D>();
+        collider.enabled = false;
+
+        Vector2 target = mapGenerator.getPos(i, j, -0.5f, 0.05f);
+        float speed = Vector2.Distance(obj.transform.position, target);
+        while (obj.transform.position.y > target.y)
+        {
+            obj.transform.position -= new Vector3(0f, speed * Time.fixedDeltaTime, 0f);
+            yield return new WaitForFixedUpdate();
+        }
+
+        obj.transform.position = new Vector3(target.x, target.y, 0);
+
+        gameManager.myMap[i, j].topLayer = 'M';
+        gameManager.myMapObj[i, j].topLayer = obj;
+
+        collider.enabled = true;
+    }
+
+    public IEnumerator attackSpike(int i, int j)
+    {
+        GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[7]);
+        obj.GetComponent<Animator>().SetTrigger("Warning");
+
+        gameManager.myMap[i, j].groundLayer = '!'; // pending
+
+        yield return new WaitForSeconds(0.8f);
+
+        gameManager.myMap[i, j].groundLayer = '|';
+        gameManager.myMapObj[i, j].groundLayer = obj;
+
+        yield return new WaitForSeconds(0.2f);
+
+        // check if new spike can deal damage to player
+        gameManager.canSpikeDealDamage(i, j);
+
+        obj.GetComponent<Animator>().SetTrigger("Destroy");
+
+        yield return new WaitForSeconds(0.5f);
+
+        obj.GetComponent<NormalSpike>().Destroy();
+        mapGenerator.generateTile(i, j, mapGenerator.tiles[1].tile);
+
+        gameManager.myMap[i, j].groundLayer = '.';
+        gameManager.myMapObj[i, j].groundLayer = null;
+    }
+
 }

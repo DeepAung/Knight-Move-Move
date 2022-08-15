@@ -9,6 +9,8 @@ public class MovableStone : MonoBehaviour
 
     float moveSpeed = 10f;
 
+    bool trigger = false;
+
     public void Destroy()
     {
         Destroy(gameObject);
@@ -18,9 +20,16 @@ public class MovableStone : MonoBehaviour
     {
         for (int i = 0; i < 5; i++)
         {
+            if (trigger) yield break;
+
             transform.position += new Vector3(dx, dy, 0f) * moveSpeed * Time.fixedDeltaTime;
             yield return new WaitForFixedUpdate();
         }
+    }
+
+    private void OnDestroy()
+    {
+        trigger = true;
     }
 
 }

@@ -116,9 +116,9 @@ public class MapGenerator_Boss : MonoBehaviour
                 else if (topLayer == 'M') // movable stone
                 {
                     var gameObj = generatePrefabs(i, j, -0.5f, 0.05f, prefabs[4]);
-                    //gameObj
-                    //    .GetComponent<MovableStone>()
-                    //    .position = new int[2] { i, j };
+                    gameObj
+                        .GetComponent<MovableStone>()
+                        .position = new int[2] { i, j };
 
                     gameManager.myMapObj[i, j].topLayer = gameObj;
                 }

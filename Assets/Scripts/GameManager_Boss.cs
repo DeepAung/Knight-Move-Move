@@ -38,9 +38,7 @@ public class GameManager_Boss : MonoBehaviour
     {
         int i = Random.Range(0, n);
         int j = Random.Range(0, m);
-        GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[5]);
-        myMap[i, j].groundLayer = 'E';
-        myMapObj[i, j].groundLayer = obj;
+        mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[9]);
     }
 
     // Update is called once per frame
@@ -120,42 +118,19 @@ public class GameManager_Boss : MonoBehaviour
 
             var script = myMapObj[ni, nj].topLayer.GetComponent<MovableStone>();
 
-            if (myMap[nni, nnj].groundLayer == 'E')
-            {
+            // swap char
+            char temp = myMap[ni, nj].topLayer;
+            myMap[ni, nj].topLayer = myMap[nni, nnj].topLayer;
+            myMap[nni, nnj].topLayer = temp;
 
-                script.Destroy();
-                myMap[ni, nj].topLayer = ' ';
-                myMapObj[ni, nj].topLayer = null;
+            // swap gameObject
+            GameObject temp2 = myMapObj[ni, nj].topLayer;
+            myMapObj[ni, nj].topLayer = myMapObj[nni, nnj].topLayer;
+            myMapObj[nni, nnj].topLayer = temp2;
 
-                boss.health--;
-                if (boss.health == 0)
-                {
-                    boss.animator.SetTrigger("Dead");
-                    PassValue.instance.dialogueName = "Outro";
-                    SceneLoader.instance.loadScene(1, 3f);
-                }
-                else
-                {
-                    boss.animator.SetTrigger("Hit");
-                }
+            script.position = new int[] { nni, nnj };
 
-                Debug.LogWarning("gen new teleport");
-                genNewTeleport(nni, nnj);
-            }
-            else
-            {
-                // swap char
-                char temp = myMap[ni, nj].topLayer;
-                myMap[ni, nj].topLayer = myMap[nni, nnj].topLayer;
-                myMap[nni, nnj].topLayer = temp;
-
-                StartCoroutine(script.moveTo(dx, dy));
-
-                // swap gameObject
-                GameObject temp2 = myMapObj[ni, nj].topLayer;
-                myMapObj[ni, nj].topLayer = myMapObj[nni, nnj].topLayer;
-                myMapObj[nni, nnj].topLayer = temp2;
-            }
+            StartCoroutine(script.moveTo(dx, dy));
 
             AudioManager.instance.play("StoneMove");
 
@@ -257,26 +232,30 @@ public class GameManager_Boss : MonoBehaviour
         if (myPlayer.position[0] == i && myPlayer.position[1] == j)
         {
             myPlayer.getDamage();
+            if (myPlayer.health <= 0)
+            {
+                myPlayer.animationDestroy();
+            }
         }
     }
 
-    public void genNewTeleport(int pi, int pj)
-    {
-        Destroy(myMapObj[pi, pj].groundLayer);
-        myMap[pi, pj].groundLayer = '.';
-        myMapObj[pi, pj].groundLayer = null;
+    //public void genNewTeleport(int pi, int pj)
+    //{
+    //    Destroy(myMapObj[pi, pj].groundLayer);
+    //    myMap[pi, pj].groundLayer = '.';
+    //    myMapObj[pi, pj].groundLayer = null;
 
-        int i, j;
-        do
-        {
-            i = Random.Range(0, n);
-            j = Random.Range(0, m);
-        } while (myMap[i, j].topLayer != ' ' || 
-                 myMap[i, j].groundLayer != '.');
+    //    int i, j;
+    //    do
+    //    {
+    //        i = Random.Range(0, n);
+    //        j = Random.Range(0, m);
+    //    } while (myMap[i, j].topLayer != ' ' || 
+    //             myMap[i, j].groundLayer != '.');
 
-        Debug.LogWarning("gen new teleport: out of loop");
-        GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[5]);
-        myMap[i, j].groundLayer = 'E';
-        myMapObj[i, j].groundLayer = obj;
-    }
+    //    Debug.LogWarning("gen new teleport: out of loop");
+    //    GameObject obj = mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[5]);
+    //    myMap[i, j].groundLayer = 'E';
+    //    myMapObj[i, j].groundLayer = obj;
+    //}
 }
