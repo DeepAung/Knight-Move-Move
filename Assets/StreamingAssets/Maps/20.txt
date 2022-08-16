@@ -1,0 +1,9 @@
+8 10 13 14
+ X X X X X X X X X X
+ XB. . + - - - - + X
+ XB. . + - +N. | 1 X
+S. . . -N. - + + . X
+ X X X X X X .M. .B.
+ X X X X EB.M. .B.N.
+ X X XM.B. + - |B.N.
+ X X X .M. .B.B.B. X
