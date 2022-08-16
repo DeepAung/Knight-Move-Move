@@ -12,6 +12,7 @@ public class PassValue : MonoBehaviour
 
     // for tutorials
     public bool isTutorial;
+    public bool onHiddenRoom;
     public int popUpIndex;
     public int stageIndex;
 

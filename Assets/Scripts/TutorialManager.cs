@@ -69,7 +69,7 @@ public class TutorialManager : MonoBehaviour
     void Update()
     {
         // for AfterIntro (when wizard talks to player in hidden room)
-        if (CutSceneManager.instance.onHiddenRoom)
+        if (PassValue.instance.onHiddenRoom)
         {
             if (popUpIndex == -1) return;
 
@@ -82,7 +82,6 @@ public class TutorialManager : MonoBehaviour
                 {
                     popUpText.text = "";
                     popUpIndex = -1;
-                    bg.color = hide;
                     return;
                 }
             }
@@ -211,7 +210,7 @@ public class TutorialManager : MonoBehaviour
         for (int i = 0; i < str.Length; i++)
         {
             popUpText.text += str[i];
-            yield return new WaitForSeconds(0.001f);
+            yield return new WaitForSeconds(0.01f);
         }
     }
 

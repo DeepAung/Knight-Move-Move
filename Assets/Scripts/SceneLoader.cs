@@ -43,14 +43,14 @@ public class SceneLoader : MonoBehaviour
         {
             PassValue.instance.isTutorial = true;
             if (SceneManager.GetActiveScene().buildIndex != 2)
-                CutSceneManager.instance.onHiddenRoom = true;
+                PassValue.instance.onHiddenRoom = true;
         }
         else
         {
             PassValue.instance.isTutorial = false;
             PassValue.instance.stageIndex = 0;
             PassValue.instance.popUpIndex = 0;
-            CutSceneManager.instance.onHiddenRoom = false;
+            PassValue.instance.onHiddenRoom = false;
         }
 
         StartCoroutine( awaitLoadScene(index, deley) );

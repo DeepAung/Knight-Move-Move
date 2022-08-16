@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
         if (gameObject.name == "HiddenGameManager")
         {
 
-            if (CutSceneManager.instance == null || !CutSceneManager.instance.onHiddenRoom)
+            if (!PassValue.instance.onHiddenRoom)
             {
                 Destroy(gameObject);
                 return;
@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         if (gameObject.name == "GameManager")
         {
-            if (CutSceneManager.instance != null && CutSceneManager.instance.onHiddenRoom) return;
+            if (PassValue.instance.onHiddenRoom) return;
         }
 
         if (gameObject.name == "HiddenGameManager")
@@ -221,7 +221,7 @@ public class GameManager : MonoBehaviour
             if (myPlayer.position[0] - dy == 7 && 
                 myPlayer.position[1] + dx == 8)
             {
-                CutSceneManager.instance.onHiddenRoom = false;
+                PassValue.instance.onHiddenRoom = false;
                 SceneLoader.instance.loadScene(2, 0.2f);
                 Destroy(myPlayer, 0.5f);
             }
