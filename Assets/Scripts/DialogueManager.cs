@@ -43,7 +43,9 @@ public class DialogueManager : MonoBehaviour
         showImage.sprite = imageSpriteList[index];
 
 
-        if (Input.anyKeyDown)
+        if (Input.GetKeyDown(KeyCode.Space) ||
+                Input.GetKeyDown(KeyCode.Return) ||
+                Input.GetKeyDown(KeyCode.KeypadEnter))
         {
             index++;
             AudioManager.instance.play("ButtonClick");

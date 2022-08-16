@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     //[HideInInspector]
     public int moveCount;
-    [HideInInspector]
+    //[HideInInspector]
     public int[] position;
     public bool pass = false;
 

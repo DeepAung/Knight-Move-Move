@@ -33,12 +33,55 @@ public class GameManager : MonoBehaviour
     {
         MapParent.loadMaps();
 
-        Debug.Log(Application.persistentDataPath);
+        if (gameObject.name == "HiddenGameManager")
+        {
+
+            if (CutSceneManager.instance == null || !CutSceneManager.instance.onHiddenRoom)
+            {
+                Destroy(gameObject);
+                return;
+            }
+
+            Camera.main.transform.position = new Vector3(0, 10, Camera.main.transform.position.z);
+
+            string path = Application.streamingAssetsPath + "/Maps/HiddenRoom/HiddenRoom.txt";
+            string[] result = System.IO.File.ReadAllLines(path);
+
+            string[] firstLine = result[0].Split();
+            n = int.Parse(firstLine[0]);
+            m = int.Parse(firstLine[1]);
+
+            myPlayer.position = new int[] { 3, 8 };
+            myPlayer.moveCount = int.MaxValue;
+
+            myMap = new layer[result.Length - 1, result[1].Length];
+
+            for (int i = 0; i+1 < result.Length; i++)
+            {
+                for (int j = 0; j*2 < result[i+1].Length; j++)
+                {
+                    char topLayer = result[i + 1][j * 2],
+                         groundLayer = result[i + 1][j * 2 + 1];
+
+                    myMap[i, j].topLayer = topLayer;
+                    myMap[i, j].groundLayer = groundLayer;
+                }
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameObject.name == "GameManager")
+        {
+            if (CutSceneManager.instance != null && CutSceneManager.instance.onHiddenRoom) return;
+        }
+
+        if (gameObject.name == "HiddenGameManager")
+        {
+            if (PassValue.instance.popUpIndex != -1) return;
+        }
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
@@ -172,6 +215,17 @@ public class GameManager : MonoBehaviour
         }
 
         // ----------------- player can move ----------------- //
+
+        if (gameObject.name == "HiddenGameManager")
+        {
+            if (myPlayer.position[0] - dy == 7 && 
+                myPlayer.position[1] + dx == 8)
+            {
+                CutSceneManager.instance.onHiddenRoom = false;
+                SceneLoader.instance.loadScene(2, 0.2f);
+                Destroy(myPlayer, 0.5f);
+            }
+        }
 
         myPlayer.moveCount--;
         myPlayer.enqueueMove(dx, dy);

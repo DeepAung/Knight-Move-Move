@@ -1,7 +1,9 @@
-6 8 3 12
+8 8 6 12
+ X X X X . X X X
+ X X X X . X X X
  X E . .N. . . X
- X + X X X X . X
- X - X X X X . X
  X + X X X XS. X
+ X - X X X XB. X
+ X + X X X X . X
 B. . . | . .M. 1
  X X X X X X . X

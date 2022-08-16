@@ -101,9 +101,9 @@ public class MapGenerator : MonoBehaviour
                 {
                     gameManager.myMap[i, j].topLayer = ' ';
 
-                    var playerObj = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0])
-                        .GetComponent<Player>();
+                    var result = generatePrefabs(i, j, -0.5f, 0.25f, prefabs[0]);
 
+                    var playerObj = result.GetComponent<Player>();
                     playerObj.position = new int[2] {i, j};
                     playerObj.moveCount = int.Parse(firstLine[2]);
                     gameManager.myPlayer = playerObj;

@@ -1,6 +1,8 @@
-6 8 6 12
- X E . .N. . . X
- X + X X X XS. X
+8 8 7 12
+ X X X X . X X X
+ X X X X . X X X
+ X E . .N. .S. X
+ X + X X X X . X
  X - X X X XB. X
  X + X X X X . X
 B. . . | . .M. 1

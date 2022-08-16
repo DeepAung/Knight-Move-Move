@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using TMPro;
 
@@ -8,8 +9,12 @@ public class TutorialManager : MonoBehaviour
 {
     public GameManager gameManager;
 
+    public Image bg;
+    readonly Color show = new Color(1f, 1f, 1f, 0.5f),
+                   hide = new Color(1f, 1f, 1f, 0f);
+
     public TMP_Text popUpText;
-    public string[] popUps;
+    public string[] popUps, popUpsAfterIntro;
     public int popUpIndex {
         get {
             return PassValue.instance.popUpIndex;
@@ -19,6 +24,7 @@ public class TutorialManager : MonoBehaviour
             PassValue.instance.popUpIndex = value;
         }
     }
+    public int popUpIndexAfterIntro = 0;
 
     bool rendered, waiting;
 
@@ -27,14 +33,20 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        bg.color = show;
+
         if (!PassValue.instance.isTutorial)
         {
+            bg.color = hide;
             Destroy(popUpText);
             Destroy(gameObject);
             return;
         }
 
-        string path = Application.streamingAssetsPath + "/Dialogues/Tutorial.txt";
+        string path = Application.streamingAssetsPath + "/Dialogues/AfterIntro.txt";
+        popUpsAfterIntro = System.IO.File.ReadAllLines(path);
+
+        path = Application.streamingAssetsPath + "/Dialogues/Tutorial.txt";
         popUps = System.IO.File.ReadAllLines(path);
         popUpIndex = PassValue.instance.popUpIndex;
 
@@ -43,18 +55,54 @@ public class TutorialManager : MonoBehaviour
 
         stage = new List<string>() {
             "04",
-            "06",
-            "16",
+            "24",
+            "26",
             "36",
-            "44",
-            "41",
-            "01"
+            "56",
+            "64",
+            "61",
+            "21"
         };
     }
 
     // Update is called once per frame
     void Update()
     {
+        // for AfterIntro (when wizard talks to player in hidden room)
+        if (CutSceneManager.instance.onHiddenRoom)
+        {
+            if (popUpIndex == -1) return;
+
+            if (Input.GetKeyDown(KeyCode.Space) ||
+                Input.GetKeyDown(KeyCode.Return) || 
+                Input.GetKeyDown(KeyCode.KeypadEnter))
+            {
+                goNextPopUp(1);
+                if (popUpIndex == popUpsAfterIntro.Length)
+                {
+                    popUpText.text = "";
+                    popUpIndex = -1;
+                    bg.color = hide;
+                    return;
+                }
+            }
+
+            if (!rendered)
+            {
+                StopAllCoroutines();
+                StartCoroutine(renderPopUpAfterIntro());
+                rendered = true;
+            }
+
+            return;
+        }
+
+        if (popUpIndex == -1)
+        {
+            if (playerIsAt(1)) goNextPopUp(1);
+            return;
+        }
+
         if (!rendered)
         {
             StopAllCoroutines();
@@ -66,55 +114,60 @@ public class TutorialManager : MonoBehaviour
         {
             if (!waiting)
             {
+                bg.color = show;
+
                 StartCoroutine(waitThenGoNextPopUp(2f, 1));
             }
         }
         if (popUpIndex <= 1)
         {
-            if (playerIsAt(1)) goNextPopUp(1);
+            if (playerIsAt(2)) goNextPopUp(1);
         }
         else if (popUpIndex == 2)
         {
-            if (playerIsAt(2)) goNextPopUp(1);
+            if (playerIsAt(3)) goNextPopUp(1);
         }
         else if (popUpIndex == 3)
         {
-            if (playerIsAt(3)) goNextPopUp(1);
+            if (playerIsAt(4)) goNextPopUp(1);
         }
         else if (popUpIndex == 4)
         {
             if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass)
             {
                 popUpIndex++;
-                //waiting = true;
-                //goNextPopUp(1);
             }
-            if (playerIsAt(4)) goNextPopUp(2);
+            if (playerIsAt(5)) goNextPopUp(2);
         }
         else if (popUpIndex == 5)
         {
-            if (playerIsAt(4)) goNextPopUp(1);
+            if (playerIsAt(5)) goNextPopUp(1);
         }
         else if (popUpIndex == 6)
         {
-            if (playerIsAt(5)) goNextPopUp(1);
+            if (playerIsAt(6)) goNextPopUp(1);
         }
         else if (popUpIndex == 7)
         {
             if (gameManager.myPlayer.moveCount <= 0 && !gameManager.myPlayer.pass)
             {
                 popUpIndex++;
-                //goNextPopUp(1);
             }
-            else if (playerIsAt(6)) goNextPopUp(2);
+            else if (playerIsAt(7))
+            {
+                goNextPopUp(2);
+            }
         }
         else if (popUpIndex == 8)
         {
-            if (playerIsAt(6)) goNextPopUp(1);
+            if (playerIsAt(7))
+            {
+                goNextPopUp(1);
+            }
         }
         else if (popUpIndex == 9)
         {
-            // end tutorial
+
         }
     }
 
@@ -133,6 +186,7 @@ public class TutorialManager : MonoBehaviour
 
     void goNextPopUp(int add)
     {
+        AudioManager.instance.play("ButtonClick");
         popUpIndex += add;
         rendered = false;
     }
@@ -146,6 +200,18 @@ public class TutorialManager : MonoBehaviour
         {
             popUpText.text += str[i];
             yield return new WaitForSeconds(0.01f);
+        }
+    }
+
+    IEnumerator renderPopUpAfterIntro()
+    {
+        string str = popUpsAfterIntro[popUpIndex];
+        popUpText.text = "";
+
+        for (int i = 0; i < str.Length; i++)
+        {
+            popUpText.text += str[i];
+            yield return new WaitForSeconds(0.001f);
         }
     }
 

@@ -9,7 +9,7 @@ public class SceneLoader : MonoBehaviour
     public static SceneLoader instance;
     public Animator animator;
 
-    private void Start()
+    private void Awake()
     {
         instance = this;
 
@@ -20,7 +20,9 @@ public class SceneLoader : MonoBehaviour
             PassValue.instance.isBossScene = false;
 
         if (currIndex == 2 && PassValue.instance.mapNumber == 0)
+        {
             PassValue.instance.isTutorial = true;
+        }
         else
         {
             PassValue.instance.isTutorial = false;
@@ -38,12 +40,17 @@ public class SceneLoader : MonoBehaviour
             PassValue.instance.isBossScene = false;
 
         if (index == 2 && PassValue.instance.mapNumber == 0)
+        {
             PassValue.instance.isTutorial = true;
+            if (SceneManager.GetActiveScene().buildIndex != 2)
+                CutSceneManager.instance.onHiddenRoom = true;
+        }
         else
         {
             PassValue.instance.isTutorial = false;
             PassValue.instance.stageIndex = 0;
             PassValue.instance.popUpIndex = 0;
+            CutSceneManager.instance.onHiddenRoom = false;
         }
 
         StartCoroutine( awaitLoadScene(index, deley) );
