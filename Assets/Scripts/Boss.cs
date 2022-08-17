@@ -81,7 +81,8 @@ public class Boss : MonoBehaviour
             j = Random.Range(0, gameManager.m);
 
             if (++cnt >= LIMIT) return;
-        } while (gameManager.myMap[i, j].topLayer != ' ');
+        } while (gameManager.myMap[i, j].topLayer != ' ' || 
+                 gameManager.myMap[i, j].groundLayer != 'E');
 
         StartCoroutine(attackMovableStone(i, j));
     }
