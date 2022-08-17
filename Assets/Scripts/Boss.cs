@@ -82,7 +82,7 @@ public class Boss : MonoBehaviour
 
             if (++cnt >= LIMIT) return;
         } while (gameManager.myMap[i, j].topLayer != ' ' || 
-                 gameManager.myMap[i, j].groundLayer != 'E');
+                 gameManager.myMap[i, j].groundLayer == 'E');
 
         StartCoroutine(attackMovableStone(i, j));
     }
