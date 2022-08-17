@@ -35,8 +35,7 @@ public class MainMenuManager : MonoBehaviour
         MapParent.loadMaps();
 
         PassValue.instance.mapNumber = 0;
-        PassValue.instance.dialogueName = "Intro";
-        SceneLoader.instance.loadScene(1);
+        SceneLoader.instance.loadScene(2);
     }
 
     public static void goToScene()
@@ -47,12 +46,7 @@ public class MainMenuManager : MonoBehaviour
 
         PassValue.instance.mapNumber = buttonName;
 
-        if (buttonName == 0)
-        {
-            PassValue.instance.dialogueName = "Intro";
-            SceneLoader.instance.loadScene(1); // Dialogue
-        }
-        else if (buttonName == int.MaxValue)
+        if (buttonName == int.MaxValue)
         {
             SceneLoader.instance.loadScene(3); // Boss
         }

@@ -169,6 +169,8 @@ public class GameManager_Boss : MonoBehaviour
             var script = myMapObj[ni, nj].groundLayer.GetComponent<Potion>();
             myPlayer.health += script.power;
             script.Destroy();
+
+            AudioManager.instance.play("GetPotion");
         }
 
         if (groundLayer == '_')
@@ -180,6 +182,8 @@ public class GameManager_Boss : MonoBehaviour
             script.Destroy();
 
             mapGenerator.generatePrefabs(i, j, -0.5f, 0.05f, mapGenerator.prefabs[2]);
+
+            AudioManager.instance.play("StoneMove");
         }
 
         /*if (newGroundLayer == 'E')

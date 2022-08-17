@@ -13,55 +13,93 @@ public class DialogueManager : MonoBehaviour
     Animator showTextAnim, showImageAnim;
 
     string[] textFile;
-    List<Sprite> imageSpriteList;
+    Sprite imageSprite;
 
+    bool finished = false;
     int index = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        //hide image
+        showImage.enabled = false;
+        helpText.enabled = false;
+
         showTextAnim = showText.GetComponent<Animator>();
         showImageAnim = showImage.GetComponent<Animator>();
 
-        string path = Application.streamingAssetsPath + "/Dialogues/" + PassValue.instance.dialogueName + ".txt";
-        textFile = File.ReadAllLines(path);
+        var result = Resources.Load<TextAsset>("Dialogues/" + PassValue.instance.dialogueName);
+        textFile = result.text.Split('\n');
 
-        showText.text = "";
 
-        imageSpriteList = new List<Sprite>(
-            Resources.LoadAll<Sprite>("Image/" + PassValue.instance.dialogueName)
-        );
+        if (PassValue.instance.dialogueName == "BeforeBoss")
+        {
+            showImage.enabled = true;
+
+            imageSprite = Resources.Load<Sprite>("DialoguesImage/BeforeBoss");
+            showImage.sprite = imageSprite;
+            showImageAnim.SetTrigger("Start");
+        }
+        else if (PassValue.instance.dialogueName == "Warning")
+        {
+            showText.color = Color.red;
+        }
+        StartCoroutine(showDialogues());
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (index == imageSpriteList.Count) return;
 
-
-        showText.text = textFile[index];
-        showImage.sprite = imageSpriteList[index];
-
-
-        if (Input.GetKeyDown(KeyCode.Space) ||
-                Input.GetKeyDown(KeyCode.Return) ||
-                Input.GetKeyDown(KeyCode.KeypadEnter))
+        if (finished && 
+            (Input.GetKeyDown(KeyCode.Space) ||
+             Input.GetKeyDown(KeyCode.Return) ||
+             Input.GetKeyDown(KeyCode.KeypadEnter)))
         {
-            index++;
-            AudioManager.instance.play("ButtonClick");
 
-            if (index == imageSpriteList.Count)
+            AudioManager.instance.play("ButtonClick");
+            index++;
+
+            if (index == textFile.Length)
             {
-                if (PassValue.instance.dialogueName == "Intro")
-                    SceneLoader.instance.loadScene(2);
+                finished = false;
+                if (PassValue.instance.dialogueName == "Warning")
+                {
+                    PassValue.instance.dialogueName = "BeforeBoss";
+                    SceneLoader.instance.loadScene(1);
+                }
+                else if (PassValue.instance.dialogueName == "BeforeBoss")
+                {
+                    SceneLoader.instance.loadScene(3);
+                }
                 else if (PassValue.instance.dialogueName == "Outro")
+                {
                     SceneLoader.instance.loadScene(0);
+                }
             }
             else
             {
-                showTextAnim.SetTrigger("Start");
-                showImageAnim.SetTrigger("Start");
+                if (PassValue.instance.dialogueName == "BeforeBoss")
+                {
+                    if (index == 6 || index == 9 || index == 11 || index == 12)
+                        showText.color = Color.red;
+                    else
+                        showText.color = Color.white;
+                }
+                StartCoroutine(showDialogues());
             }
+
         }
+    }
+
+    IEnumerator showDialogues()
+    {
+
+        showText.text = textFile[index];
+        showTextAnim.SetTrigger("Start");
+        yield return new WaitForSeconds(1f);
+        helpText.enabled = true;
+        finished = true;
     }
 }

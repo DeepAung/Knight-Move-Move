@@ -103,3 +103,9 @@ MonoBehaviour:
     pitch: 1
     loop: 0
     source: {fileID: 0}
+  - name: GetPotion
+    clip: {fileID: 8300000, guid: a04c4f7365ee9b44e902b39b56125f95, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}

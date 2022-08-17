@@ -11,6 +11,7 @@ public class SceneLoader : MonoBehaviour
 
     private void Awake()
     {
+
         instance = this;
 
         int currIndex = SceneManager.GetActiveScene().buildIndex;
