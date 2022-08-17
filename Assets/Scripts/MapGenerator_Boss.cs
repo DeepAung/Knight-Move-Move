@@ -60,13 +60,13 @@ public class MapGenerator_Boss : MonoBehaviour
     void renderMap()
     {
         // render all cells to background
-        for (int x = -9; x <= 8; x++)
-        {
-            for (int y = 4; y >= -5; y--)
-            {
-                groundTilemap.SetTile(new Vector3Int(x, y, 0), tiles[0].tile);
-            }
-        }
+        //for (int x = -9; x <= 8; x++)
+        //{
+        //    for (int y = 4; y >= -5; y--)
+        //    {
+        //        groundTilemap.SetTile(new Vector3Int(x, y, 0), tiles[0].tile);
+        //    }
+        //}
 
         // set myMap length
         gameManager.myMap = new GameManager_Boss.layer[mapText.Length - 1, mapText[1].Length];

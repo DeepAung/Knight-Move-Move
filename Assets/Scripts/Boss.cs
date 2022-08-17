@@ -49,7 +49,7 @@ public class Boss : MonoBehaviour
         movableStoneTime -= Time.deltaTime;
         spikeTime -= Time.deltaTime;
 
-        if (movableStoneTime <= 0 || spikeTime <= 0)
+        if (movableStoneTime <= 0)
         {
             animator.SetTrigger("Attack");
         }
@@ -67,7 +67,7 @@ public class Boss : MonoBehaviour
 
             if (stage == 0) spikeTime = 2.5f;
             else if (stage == 1) spikeTime = 1.5f;
-            else if (stage == 2) spikeTime = 1f;
+            else if (stage == 2) spikeTime = 1.5f;
         }
     }
 

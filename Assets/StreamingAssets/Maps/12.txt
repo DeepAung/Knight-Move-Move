@@ -1,10 +1,9 @@
-9 9 1 11 12 12 3
- 4 - + EN.N.N.N.N.
- -M. .N.N.N. . E .
- -M.N.N.B_N.N.M+ +
- + . .N. .N. - + -
-N.N.B_ 1S_ 3 _ .N.
- .M. .N. 2N. -N. E
-N.N. - |B_ . +M. .
- EM. +N.N. - +B. -
- . . .N.N. + . . .
+8 10 13 14
+ X X X X X X X X X X
+ XB. . + - - - - + X
+ XB. . + - +N. | 1 X
+S. . . -N. - + + . X
+ X X X X X X .M. .B.
+ X X X X EB.M. .B.N.
+ X X XM.B. + - |B.N.
+ X X X .M. .B.B.B. X

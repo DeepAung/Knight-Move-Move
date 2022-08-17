@@ -36,8 +36,9 @@ public class Collector : MonoBehaviour
             if (boss.health == 0)
             {
                 boss.animator.SetTrigger("Dead");
+                AudioManager.instance.play("GameOver");
                 PassValue.instance.dialogueName = "Outro";
-                SceneLoader.instance.loadScene(1, 3f);
+                SceneLoader.instance.loadScene(1, 1f);
             }
             else
             {

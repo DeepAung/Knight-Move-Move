@@ -1,0 +1,10 @@
+???: ARISE!
+Holy Saint: You were resurrected by me the Holy Saint.
+You: Why am I being resurrected?
+Holy Saint: I have mercy on you, so I have done it.
+You: But why am I a Skeleton?
+Holy Saint: Because my Power is still unable to make you completely human.
+Holy Saint: I will entrust you with a mission to bring the holy water "Elixir" to save all lives and bring you back to be fully human.
+You: Where?
+Holy Saint: In the dungeon where you are now. Watch out for traps, GOOD LUCK...
+(use WASD or Arrow Key to move)

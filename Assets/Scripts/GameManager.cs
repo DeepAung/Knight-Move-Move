@@ -235,6 +235,8 @@ public class GameManager : MonoBehaviour
             myMap[ni, nj].groundLayer = '.';
             myPlayer.moveCount += myPotions[newGroundLayer - '1'].power;
             myPotions[newGroundLayer - '1'].Destroy();
+
+            AudioManager.instance.play("GetPotion");
         }
 
         if (groundLayer == '_')
@@ -249,6 +251,8 @@ public class GameManager : MonoBehaviour
                     myPressurePlates[it].Destroy();
                     mapGenerator.generatePrefabs(i, j, -0.5f, 0.05f, mapGenerator.prefabs[2]);
 
+                    AudioManager.instance.play("StoneMove");
+
                 }
             }
         }
@@ -258,7 +262,8 @@ public class GameManager : MonoBehaviour
 
             if (PassValue.instance.mapNumber == PassValue.instance.mapList[PassValue.instance.mapList.Count - 2])
             {
-                SceneLoader.instance.loadScene(3); // Boss
+                PassValue.instance.dialogueName = "Warning";
+                SceneLoader.instance.loadScene(1);
             }
             //if (PassValue.instance.mapNumber == PassValue.instance.mapList[PassValue.instance.mapList.Count - 1])
             //{

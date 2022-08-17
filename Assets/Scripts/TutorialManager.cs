@@ -9,12 +9,12 @@ public class TutorialManager : MonoBehaviour
 {
     public GameManager gameManager;
 
-    public Image bg;
+    public Image bg, blackGround, showImage;
     readonly Color show = new Color(1f, 1f, 1f, 0.5f),
                    hide = new Color(1f, 1f, 1f, 0f);
 
     public TMP_Text popUpText;
-    public string[] popUps, popUpsAfterIntro;
+    public string[] popUps, popUpsIntro;
     public int popUpIndex {
         get {
             return PassValue.instance.popUpIndex;
@@ -37,18 +37,27 @@ public class TutorialManager : MonoBehaviour
 
         if (!PassValue.instance.isTutorial)
         {
+            blackGround.enabled = false;
+            showImage.enabled = false;
             bg.color = hide;
             Destroy(popUpText);
             Destroy(gameObject);
             return;
         }
 
-        string path = Application.streamingAssetsPath + "/Dialogues/AfterIntro.txt";
-        popUpsAfterIntro = System.IO.File.ReadAllLines(path);
+        popUpsIntro = Resources.Load<TextAsset>("Dialogues/Intro").text.Split('\n');
 
-        path = Application.streamingAssetsPath + "/Dialogues/Tutorial.txt";
-        popUps = System.IO.File.ReadAllLines(path);
+        showImage.sprite = Resources.Load<Sprite>("DialoguesImage/Intro");
+
         popUpIndex = PassValue.instance.popUpIndex;
+        if (!PassValue.instance.onHiddenRoom || popUpIndex != 0)
+        {
+            Debug.Log("test");
+            blackGround.enabled = false;
+            showImage.enabled = false;
+        }
+
+        popUps = Resources.Load<TextAsset>("Dialogues/Tutorial").text.Split('\n');
 
         rendered = false;
         waiting = false;
@@ -78,9 +87,12 @@ public class TutorialManager : MonoBehaviour
                 Input.GetKeyDown(KeyCode.KeypadEnter))
             {
                 goNextPopUp(1);
-                if (popUpIndex == popUpsAfterIntro.Length)
+                if (popUpIndex == 1)
                 {
-                    popUpText.text = "";
+                    blackGround.GetComponent<Animator>().SetTrigger("Fadeout");
+                }
+                else if (popUpIndex == popUpsIntro.Length)
+                {
                     popUpIndex = -1;
                     return;
                 }
@@ -204,7 +216,7 @@ public class TutorialManager : MonoBehaviour
 
     IEnumerator renderPopUpAfterIntro()
     {
-        string str = popUpsAfterIntro[popUpIndex];
+        string str = popUpsIntro[popUpIndex];
         popUpText.text = "";
 
         for (int i = 0; i < str.Length; i++)
