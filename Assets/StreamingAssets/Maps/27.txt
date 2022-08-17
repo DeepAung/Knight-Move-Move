@@ -1,0 +1,10 @@
+9 8 19 10 40
+B1 X . X . XS. X
+ . .M. . . . . .
+ X +M. X X +M. X
+ .M. | X XM. - .
+ X .M. . X +M. X
+ . | . X X . | .
+ X . | X . -M. X
+B.B.M. .B. | . 2
+B.MEB. XB. X . X
