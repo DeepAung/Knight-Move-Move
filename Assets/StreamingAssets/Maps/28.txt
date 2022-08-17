@@ -1,8 +1,7 @@
-7 9 7 17 7 9
- . . - + .B. . .S.
- .N.B.N.M.N. -N.M.
- .N. .B. .N. -N. .
- -B. 2N.M.N. +N. X
- +N. .N. .N. 1N. X
- -N.M.N.N.N.N.N. E
- 3 - . + - + - + .
+6 10 11 1 0 24
+B1 .B.M.N.M.N.M. | E
+N.S.M.N.M. |M. | - |
+B2M.M. .N.M.B. - + X
+B3 .M. . .N. .M.B. X
+ X . -M. | .M. |M. E
+ XM.B.N. . .M. .B.N.

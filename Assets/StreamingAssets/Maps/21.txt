@@ -1,8 +1,11 @@
-7 11 25 16
- X . X X X X X X X X X
- X . . . .N.M. . .M. X
- XM.N.B. .N. .M.M. . X
-S.M.B.N. .N. . .MEM. X
- .M. . .B.N.M. .M. . X
- XN.N.N. .N. . X X X X
- XN. 1 - . . . X X X X
+10 5 13 11 6
+ XN.B. . .
+ X EM. . +
+ XM.B.N. 2
+ X . . _ +
+ X .N. . |
+ X + .N. |
+ X . . | |
+ 1M.M.M.M.
+ X | . . .
+ X . . .S.

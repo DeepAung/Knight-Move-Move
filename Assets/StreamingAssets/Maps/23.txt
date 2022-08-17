@@ -1,9 +1,8 @@
-8 10 21 27 20 1
- X .M.B. X X .B. X X
- . . . . . + . . - .
- .M. .M. .N.M.N. . -
-M. +M. +N.B.M.B.N. 1
-B2M. .B3N. |S.M. .N.
- .M+B+N. .B.M.B.N. E
-B.B.N.N.M.N.M.N. - +
- . . . . . + - | | .
+7 11 6 10 10 6
+ X X . . 1 .N. . + - E
+ X . .N.N. |N. - . | |
+ | . + . . . . +M.N.N.
+ . .S. .B.B.N. - . . X
+ X X . . . . .B. . X X
+ X X X .N. .N. . 2 X X
+ X X X 3 . .N.N. X X X

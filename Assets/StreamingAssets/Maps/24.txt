@@ -1,11 +1,8 @@
-10 5 12 11 1 17
- .M.S.M. .
-N.B1N.M.N.
- .M. . | 2
-N.M.M. .N.
- .M. .M. .
-B3 . .M.N.
- .N. .N. .
- +B.M. .B.
- |N.MEN. .
- - .M+ .N.
+7 11 25 16
+ X . X X X X X X X X X
+ X . . . .N.M. . .M. X
+ XM.N.B. .N. .M.M. . X
+S.M.B.N. .N. . .MEM. X
+ .M. . .B.N.M. .M. . X
+ XN.N.N. .N. . X X X X
+ XN. 1 - . . . X X X X
