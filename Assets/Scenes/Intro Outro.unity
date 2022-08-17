@@ -466,6 +466,8 @@ MonoBehaviour:
   showText: {fileID: 1553180138}
   helpText: {fileID: 1549360392}
   showImage: {fileID: 134278971}
+  beforeBossFont: {fileID: 11400000, guid: 3e436acbf3e67de43b9ff2eb18c843fd, type: 2}
+  warningFont: {fileID: 11400000, guid: 3e436acbf3e67de43b9ff2eb18c843fd, type: 2}
 --- !u!4 &813203886
 Transform:
   m_ObjectHideFlags: 0

@@ -10,6 +10,8 @@ public class DialogueManager : MonoBehaviour
     public TMP_Text showText, helpText;
     public Image showImage;
 
+    public TMP_FontAsset beforeBossFont, warningFont;
+
     Animator showTextAnim, showImageAnim;
 
     string[] textFile;
@@ -34,6 +36,8 @@ public class DialogueManager : MonoBehaviour
 
         if (PassValue.instance.dialogueName == "BeforeBoss")
         {
+            showText.font = beforeBossFont;
+
             showImage.enabled = true;
 
             imageSprite = Resources.Load<Sprite>("DialoguesImage/BeforeBoss");
@@ -42,6 +46,8 @@ public class DialogueManager : MonoBehaviour
         }
         else if (PassValue.instance.dialogueName == "Warning")
         {
+            showText.font = warningFont;
+
             showText.color = Color.red;
         }
         StartCoroutine(showDialogues());
