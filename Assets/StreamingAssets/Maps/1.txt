@@ -1,7 +1,7 @@
-6 7 12 7 4
- X 1B. . . . X
- XB. . .N. . 2
-S.N. . .N.N.B.
- .N. . XN. EB.
- .N. . X X X X
- . . . X X X X
+6 7 14 8 5 6 1
+ .M1B. . . | X
+ XB4 . .N. | 2
+S.N. .B3N.N.B.
+ .M. . XN. EB.
+ +N. . X X X X
+ - | - X X X X
