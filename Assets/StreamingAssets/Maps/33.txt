@@ -1,0 +1,11 @@
+10 10 14 15 15 3 3 5 2
+ . .M1B. X X .M2B. X
+S. _ .B. X XB.B. . X
+ _ . .M. . . . .B_ 3
+ .N.N. . . . . .B. .
+ .B.B. . .B. . . X X
+ - + - X XB.M.M. X X
+ | | X X X X . | X X
+ . .B. X 6 . . .M. .
+ X 4 . + - .M.M.M5 |
+ X X . . .M.B. | |BE
