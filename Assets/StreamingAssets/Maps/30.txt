@@ -1,0 +1,11 @@
+10 15 11 30 3 5 10 0 7
+ XB. _B. . . | - + 4B.M. .B| E
+ XB.M. .B6 . _ | -N.B. .M.B|B|
+ XB. _ |M. _ |B. | X XB3 _M. .
+ X _M. _ .M. _B. _ X XM.B.M.M.
+ XM. +B.BE _ | _ .B5 X .M. _ .
+ X X XB. -B. + .B. X X .M. .M.
+ X .B2 X X X X X X X XM. .M_ .
+ .M. . X X X X X X X X | +M. .
+S.M. . 1 - + - + - + - + - .B.
+ .M. . X X X X X X X X X X X X
