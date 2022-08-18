@@ -1,0 +1,11 @@
+10 15 18 5 4 10 6 13 10 7 2 7
+B. + .M. _N.BE .B. .M|B|B|B| E
+B+ . .M. -S.N.B. .M. .B|B|B|B|
+ .B+ .M. _B.N.B. .M. .M| .B|B|
+ |N.N.N.N.N.B. .M1 .M. .M| .M|
+ 2B_B4 -B- +N.M. . + -M. .M. .
+B_ | + .B. .N. .B. - + .M. . .
+B3 + .M. .B.N.B. .M9B8 _ - + |
+N.N.N.N.N. _B5N.N.N.N.N.N.N.B7
+ E |M|B| _ | .M. - +B6 + |B. -
+ _ |B.M. | - - .M+ .M. - -B. -
