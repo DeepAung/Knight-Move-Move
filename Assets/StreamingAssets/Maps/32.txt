@@ -1,0 +1,11 @@
+10 10 11 6 6 8 0 0 0 0 4
+ E + - + - .B.B3 . .
+ | X X . XB. .B. X .
+B. X X . X X . . X .
+ | X XB.B4B|B2 X X .
+B. X XB.B. . . X X .
+ | X X . .M. . X X .
+S. . | .M. .B1 X X 8
+ . X X _ X X X X X .
+ . X XB5 X X X X X .
+ _B6 .1. 7 | . E . .
