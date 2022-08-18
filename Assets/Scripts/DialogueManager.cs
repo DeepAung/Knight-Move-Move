@@ -88,7 +88,7 @@ public class DialogueManager : MonoBehaviour
             {
                 if (PassValue.instance.dialogueName == "BeforeBoss")
                 {
-                    if (index == 6 || index == 9 || index == 11 || index == 12)
+                    if (index == 6 || index == 9 || index == 12 || index == 13)
                         showText.color = Color.red;
                     else
                         showText.color = Color.white;
