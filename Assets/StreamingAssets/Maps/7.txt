@@ -1,8 +1,9 @@
-7 7 14 7
- X X X XB.M.B.
- X XB. EB.M.B.
-N.N.B.B.M.M.M.
-N.B.B.B.B.M.B.
-B.B.B.B.B.B1B.
-B.B.B.B.B.N.B.
-S.B.B.B.N.N.N.
+8 9 16 10
+ X X X XN.N.M.N. X
+ X XB. EB.B.M.B.B.
+ XB.B.B.M.B.M.B.M.
+N.N.B.B.B.M.M.M.B.
+N.B.B.B.B.B.M.B.B.
+B.B.B.B.B.B.B1B.B.
+B.B.B.B.B.B.B.B.B.
+S.B.B.B.B.B.N.N.N.
