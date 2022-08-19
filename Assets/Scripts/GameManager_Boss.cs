@@ -20,12 +20,21 @@ public class GameManager_Boss : MonoBehaviour
         public GameObject groundLayer;
     }
 
+    [System.Serializable]
+    public struct Array2D
+    {
+        public layer[] arr;
+    }
+
+
     public MapGenerator_Boss mapGenerator;
 
     public Player myPlayer;
     public List<SwappableSpike> mySwappableSpikes;
     public layer[,] myMap;
     public layerObj[,] myMapObj;
+
+    public Array2D[] showMap;
 
     public Boss boss;
 
@@ -36,14 +45,34 @@ public class GameManager_Boss : MonoBehaviour
 
     private void Start()
     {
-        int i = Random.Range(0, n);
-        int j = Random.Range(0, m);
-        mapGenerator.generatePrefabs(i, j, -0.5f, 0.5f, mapGenerator.prefabs[9]);
+        int randI = Random.Range(0, n);
+        int randJ = Random.Range(0, m);
+        mapGenerator.generatePrefabs(randI, randJ, -0.5f, 0.5f, mapGenerator.prefabs[9]);
+
+        showMap = new Array2D[n];
+        for (int i = 0; i < n; i++)
+        {
+            showMap[i].arr = new layer[m];
+            for (int j = 0; j < m; j++)
+            {
+                showMap[i].arr[j].topLayer = myMap[i, j].topLayer;
+                showMap[i].arr[j].groundLayer = myMap[i, j].groundLayer;
+            }
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        // ----- for debugging ----- //
+        //for (int i = 0; i < n; i++)
+        //{
+        //    for (int j = 0; j < m; j++)
+        //    {
+        //        showMap[i].arr[j].topLayer = myMap[i, j].topLayer;
+        //        showMap[i].arr[j].groundLayer = myMap[i, j].groundLayer;
+        //    }
+        //}
 
         movement.x = Input.GetAxisRaw("Horizontal");
         movement.y = Input.GetAxisRaw("Vertical");
@@ -135,6 +164,7 @@ public class GameManager_Boss : MonoBehaviour
             AudioManager.instance.play("StoneMove");
 
             playerCanMove = false;
+
         }
 
         updateSwappableSpikes();

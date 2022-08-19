@@ -80,7 +80,7 @@ public class Boss : MonoBehaviour
             i = Random.Range(0, gameManager.n);
             j = Random.Range(0, gameManager.m);
 
-            if (++cnt >= LIMIT) return;
+            if (++cnt >= LIMIT) { Debug.Log("LIMIT"); return; }
         } while (gameManager.myMap[i, j].topLayer != ' ' || 
                  gameManager.myMap[i, j].groundLayer == 'E');
 
@@ -130,6 +130,8 @@ public class Boss : MonoBehaviour
         gameManager.myMap[i, j].topLayer = '!'; // pending
 
         GameObject obj = mapGenerator.generatePrefabs(i - 10, j, -0.5f, 0.05f, mapGenerator.prefabs[4]);
+
+        obj.GetComponent<MovableStone>().position = new int[] { i, j };
 
         var collider = obj.GetComponent<BoxCollider2D>();
         collider.enabled = false;
