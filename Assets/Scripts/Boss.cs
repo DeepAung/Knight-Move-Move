@@ -150,6 +150,19 @@ public class Boss : MonoBehaviour
         gameManager.myMapObj[i, j].topLayer = obj;
 
         collider.enabled = true;
+
+        yield return new WaitForSeconds(15f);
+
+        if (gameManager.myMap[i, j].topLayer == ' ') yield break;
+
+        gameManager.myMapObj[i, j].topLayer
+            .GetComponent<Animator>()
+            .SetTrigger("Destroy");
+
+        Destroy(gameManager.myMapObj[i, j].topLayer, 1f);
+
+        gameManager.myMap[i, j].topLayer = ' ';
+        gameManager.myMapObj[i, j].topLayer = null;
     }
 
     public IEnumerator attackSpike(int i, int j)
