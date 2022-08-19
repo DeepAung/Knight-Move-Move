@@ -2,6 +2,6 @@
 N. .B.N.N.B.B.N.B.
 N.S. - + - + - 1 +
 N.M.N.N.N.B.M.N. -
-N. E | + -N. 3B. +
+ . E | + -N. 3B. +
 N.N. +M. +N.N.N. -
 N.N. - + - 2 + - +
