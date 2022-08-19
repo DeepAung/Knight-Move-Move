@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
         if (PassValue.instance.isBossScene)
         {
             healthBar = GameObject.FindGameObjectWithTag("PlayerHealthBar").GetComponent<HealthBar>();
-            healthBar.setMaxHealth(3);
+            healthBar.setMaxHealth(5);
             moveCount = int.MaxValue;
         }
 
