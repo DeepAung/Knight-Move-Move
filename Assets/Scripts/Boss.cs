@@ -28,18 +28,18 @@ public class Boss : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        healthBar.setMaxHealth(15);
+        healthBar.setMaxHealth(35);
 
         stage = 0;
     }
 
     private void Update()
     {
-        if (health == 12)
+        if (health == 30)
         {
             stage = 1;
         }
-        else if (health == 6)
+        else if (health == 15)
         {
             stage = 2;
         }
@@ -67,7 +67,7 @@ public class Boss : MonoBehaviour
 
             if (stage == 0) spikeTime = 2.5f;
             else if (stage == 1) spikeTime = 1.5f;
-            else if (stage == 2) spikeTime = 1.5f;
+            else if (stage == 2) spikeTime = 1.3f;
         }
     }
 
