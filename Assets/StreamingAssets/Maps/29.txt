@@ -5,5 +5,5 @@
  . | |M. .B. - .M. - X
  X .B. | |M.M. . + . X
  .B.M.M. .M. . .N. . .
-B.M.M. .M. .N. .N.MEB.
+B_M.M. .M. .N. .N.MEB.
 B. 1M. XB. X X .M.B.B3
