@@ -1,9 +1,9 @@
-8 10 1 13 1 22 17
+8 10 1 13 1 20 19
  3 . . . .M. .M. . .
  .N. + X XM. . .M. .
  .N. - X X +M. +B.M.
- .N. | X X -M+M+ - .
- .N. - X X + .M.BEN.
- .N. | X X -M.B4N.N.
- .N. - X X . .M. . .
+ .N. | X X -M+M+ - |
+ .N. - X X + .M.B. |
+ .N. | X X -M4B.N. |
+ .N. - X X . .M.N. E
  EM. . 1S_ 2N. .M.M.
