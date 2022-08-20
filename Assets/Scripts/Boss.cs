@@ -151,7 +151,7 @@ public class Boss : MonoBehaviour
 
         collider.enabled = true;
 
-        yield return new WaitForSeconds(15f);
+        yield return new WaitForSeconds(20f);
 
         if (gameManager.myMap[i, j].topLayer == ' ') yield break;
 
